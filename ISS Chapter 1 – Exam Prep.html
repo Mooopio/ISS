@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ISS Chapter 1 – Exam Prep</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b2033;--mu:#5d6580;--ac:#3b5bdb;--ac2:#e7ecff;--ok:#2b8a3e;--okb:#e6f6ea;--bad:#c92a2a;--badb:#fdeaea;--hl:#fff3bf;--bd:#e1e5f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e2a;--tx:#e8eaf3;--mu:#9aa2bd;--ac:#8ea2ff;--ac2:#252a40;--ok:#69db7c;--okb:#17301e;--bad:#ff8787;--badb:#36191c;--hl:#4a4215;--bd:#2c3044}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e2a;--tx:#e8eaf3;--mu:#9aa2bd;--ac:#8ea2ff;--ac2:#252a40;--ok:#69db7c;--okb:#17301e;--bad:#ff8787;--badb:#36191c;--hl:#4a4215;--bd:#2c3044}
+*{box-sizing:border-box}html{scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header h1{font-size:1.05rem;margin:0;flex:1 1 200px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:6px 12px;transition:.2s}
+button:hover{border-color:var(--ac)}nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav button.on{color:#12141c}}
+:root[data-theme="dark"] nav button.on{color:#12141c}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px}
+section{display:none;animation:f .35s}section.on{display:block}
+@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+details{background:var(--card);border:1px solid var(--bd);border-radius:14px;margin:10px 0;padding:0 16px}
+summary{cursor:pointer;font-weight:650;padding:13px 0;color:var(--ac)}
+details>div{padding-bottom:12px}
+mark{background:var(--hl);color:inherit;padding:0 3px;border-radius:4px}
+.box{background:var(--ac2);border-left:4px solid var(--ac);border-radius:8px;padding:8px 12px;margin:8px 0}
+.trap{background:var(--badb);border-left:4px solid var(--bad);border-radius:8px;padding:8px 12px;margin:8px 0}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.92rem}
+.tw{overflow-x:auto}th,td{border:1px solid var(--bd);padding:6px 9px;text-align:left}th{background:var(--ac2)}
+h2{margin:6px 0}li{margin:3px 0}
+.q{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;margin:12px 0}
+.o{display:block;width:100%;text-align:left;margin:6px 0}
+.o.c{background:var(--okb);border-color:var(--ok)}.o.w{background:var(--badb);border-color:var(--bad)}
+.ex{display:none;margin-top:8px;color:var(--mu)}.ex.s{display:block}
+.tag{font-size:.75rem;color:var(--mu)}.score{font-weight:700}
+</style></head><body>
+<header><h1>🔐 Information Systems Security · Chapter 1</h1>
+<nav id="nav"></nav><button id="th" aria-label="Toggle theme">🌓</button></header>
+<main>
+<section id="explain"></section><section id="summary"></section><section id="memory"></section>
+<section id="mcq"></section><section id="written"></section><section id="revision"></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const secs=[["explain","Explain"],["summary","Summary"],["memory","Memory"],["mcq","MCQs"],["written","Written"],["revision","Revision"]];
+function show(id){secs.forEach(([k])=>{$("#"+k).classList.toggle("on",k===id);});document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.k===id));scrollTo({top:0,behavior:"smooth"})}
+secs.forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.dataset.k=k;b.onclick=()=>show(k);$("#nav").appendChild(b)});
+$("#th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#12141c";r.dataset.theme=d?"light":"dark"};
+
+const E=[
+["1. Access, subject, object",`<p><b>Access</b> = the <mark>flow of information between a subject and an object</mark>. <b>Access control</b> = security features that control how users and systems interact with other systems/resources, protect them from unauthorized access, and help determine the level of authorization after authentication succeeds.</p>
+<p><b>Subject</b> = <mark>active</mark> entity that requests access (user, process, program). <b>Object</b> = <mark>passive</mark> resource being accessed (file, database, service, program, device).</p>
+<div class="box">Analogy: you (subject) tap a keycard on a hotel door (object). The door decides. Looking up data in a DB: you are the active subject, the DB is the passive object. Example: student (subject) requests transcript (object); the system checks if allowed. Requests: read, write, execute, approve.</div>`],
+["2. IAAA – the 4-step flow",`<p>Four steps occur before and during access: <b>Identification → Authentication → Authorization → Accountability</b>.</p>
+<ul><li><b>Identification</b> – claim an identity (“Who are you?”): username, student ID, employee number, account number.</li><li><b>Authentication</b> – prove the claim (“Can you prove it?”): password, MFA, token, biometric.</li><li><b>Authorization</b> – check permissions (“What may you do?”): read/write/execute.</li><li><b>Accountability</b> – record activity (“What did you do?”): logs/audit trail.</li></ul>
+<div class="box">Two checks in one login: (1) log in = authenticator verifies identity; (2) access a resource = system checks whether this authenticated user is permitted. Authentication = “Who are you?”; Authorization = “What are you allowed to do?” Permissions may be based on identity, clearance and/or group membership.</div>
+<p>Example (LMS): a student can view their own grades but cannot open the instructor-only grade editing page.</p>`],
+["3. CIA triad",`<p>Security principles = fundamental protection goals that controls are designed to achieve. Every control supports one or more of C, I, A; the balance depends on system, data and context.</p>
+<p><b>Confidentiality</b> – <mark>no unauthorized read</mark>. Information disclosed only to authorized individuals/processes/systems. Controls must dictate who can access data and what they can do with it; these activities must be controlled, audited, monitored. Mechanisms: <b>encryption (transit & rest), logical & physical access control, database views & data masking, controlled traffic flow</b>. Sensitive examples: student records, health records, financial data, source code, research data before release, criminal records. A student may see their own financial status; another student must not.</p>
+<p><b>Integrity</b> – <mark>no unauthorized write</mark>. Data stays accurate, complete and protected from unauthorized/improper modification. <b>Prevent</b> (restrict who can modify) · <b>Detect</b> (audit logs, checksums, validation) · <b>Recover</b> (restore from trusted records/backups). If illegitimate modification occurs, the mechanism must alert the user/administrator. Changing a grade without authorization violates integrity even if nothing is disclosed and the system stays online.</p>
+<p><b>Availability</b> – <mark>accessible to authorized users in a timely manner when needed</mark> so productivity is not affected. Requires: <b>timely access</b>, <b>continuity</b> (a failure should not needlessly interrupt critical services), <b>recovery</b> (fault tolerance, backup, recovery restore service). Cycle: service available → failure/outage → recovery/failover. Example: during course registration the portal must stay accessible; redundant servers and rapid recovery reduce interruption.</p>
+<div class="box">Availability is NOT simply “the system is online”; the needed information/service must be reachable when authorized users actually need it.</div>`],
+["4. Priority depends on the asset",`<p>Information attributes: <b>Accuracy</b> (correct, error-free), <b>Relevance</b> (useful for the task/decision), <b>Timeliness</b> (available when needed and sufficiently current), <b>Privacy</b> (collected/used/disclosed only as permitted).</p>
+<ul><li><b>University registration portal</b> → primary concern <mark>Availability + Timeliness</mark>. Accurate data is of little value if the portal is down at the deadline. Controls: redundancy, monitoring, failover, recovery.</li>
+<li><b>Final exam questions</b> → primary concern <mark>Confidentiality</mark>. Before the exam, prevent disclosure; high availability to everyone would conflict with the goal. Controls: restricted access, encryption, audit logging.</li></ul>
+<p>Controls must match the asset and context.</p>`],
+["5. Selecting the right mechanism",`<p>Different mechanisms give different degrees of C, I, A. Decision factors <b>E-D-S</b>: <b>Environment</b> (users, devices, networks, threats, constraints), <b>Data classification</b> (public, internal, confidential, restricted), <b>Security goals</b> (required CIA balance).</p>
+<p>Process: <b>1 Assess context → 2 Classify data → 3 Define CIA needs → 4 Choose controls.</b> A university should not buy a product just because it is new; it must address actual risks, data sensitivity and CIA goals.</p>`],
+["6. Identification requirements",`<p>Identifier rules: <b>Unique</b> (attribute actions to the right account), <b>Standardized</b> (consistent naming scheme), <b>Nondescriptive</b> (don’t reveal role/duties), <b>Not shared</b> (needed for individual accountability).</p>
+<div class="box"><b>Identifier ≠ authenticator.</b> A username/student ID says which account is claimed; a password/token/smart card/biometric authenticates it. Identifiers are generally not secret; authenticators must be protected.</div>
+<p>Identification + authentication are always together as a <mark>two-step process</mark>; without both, no access; neither alone is useful. Authentication does not automatically mean authorization. Authentication verifies the claimed identity is genuine by comparing credentials with information previously stored for the subject; if they match, the subject is authenticated. Flow: identify (“I am student 2026-1045”) → authenticate → verify → continue to authorization. Authentication examples: password/passphrase, PIN, cryptographic key, token. Password = most common form, falls under the first of three factor types.</p>`],
+["7. Authentication factors",`<ul><li><b>Type 1 – Something you KNOW</b>: any memorized string you can type: password, PIN, passphrase. Don’t use easily discovered personal facts as secrets.</li>
+<li><b>Type 2 – Something you HAVE</b>: physical device you possess at authentication time: smart card, hardware token, authenticator device/app. Can include physical location (“somewhere you are”). Possession alone doesn’t prove identity if the device is stolen.</li>
+<li><b>Type 3 – Something you ARE</b>: biometric body part/physical characteristic: fingerprint, face, iris/retina, voice. Binds authentication to the user and can’t be forgotten, BUT can be copied/spoofed and <mark>cannot be changed after compromise</mark>. Not automatically “more secure” than every other factor.</li>
+<li><b>Something you DO</b>: behavioral – signature dynamics, typing dynamics (speed, timing, rhythm), voice behavior. Often included in Type 3.</li>
+<li><b>Somewhere you ARE</b>: terminal you log in from, phone number (caller ID), country (IP). Examples: campus network, managed device, geographic context. Usually <mark>supplementary</mark> risk/context signals, not stand-alone proof.</li></ul>`],
+["8. Multi-factor authentication",`<p>MFA = two or more factors from <mark>different categories</mark>. (Strong authentication = any authentication with 2+ factors, not necessarily of different types; but mixing types is generally more secure.)</p>
+<div class="box">Valid MFA: password (know) + authenticator app code (have) [+ fingerprint (are)].</div>
+<div class="trap">Not true MFA: password + PIN – both are “something you know”.</div>
+<p>MFA reduces reliance on a single credential: compromising one factor doesn’t automatically grant access.</p>`],
+["9. Authorization & access control matrix",`<p>Authorization decides whether an authenticated subject may perform a requested action on a specific object, given the rights/privileges assigned to the identity. The system evaluates an <b>access control matrix</b> comparing subject, object and action → ALLOW or DENY. Identified + authenticated ≠ authorized.</p>
+<div class="tw"><table><tr><th>Role</th><th>Course Materials</th><th>Assignments</th><th>Final Grades</th></tr><tr><td>Student</td><td>Read</td><td>Submit</td><td>Read own</td></tr><tr><td>TA</td><td>Read / Upload</td><td>Review</td><td>No access</td></tr><tr><td>Instructor</td><td>Read / Upload</td><td>Review / Grade</td><td>Edit / Publish</td></tr><tr><td>Admin</td><td>Manage</td><td>Manage</td><td>Audit / Manage</td></tr></table></div>
+<p>Slide-19 example: Student – Student Records: No access; Own Grades: Read; Course Materials: Read. Instructor – Student Records: Limited; Own Grades: Read/Write; Course Materials: Read/Write. Authentication establishes the user; the matrix/policy determines allowed operations.</p>`],
+["10. Auditing & accountability",`<p><b>Auditing</b> = systematic recording and review of security-relevant events by users, processes and systems; tracks online activities of accounts and processes and produces <b>audit trails</b>. Trails reconstruct events and verify whether a policy/authorization was violated. They answer <mark>Who? What? When? Where? Result?</mark> Used for investigation, policy verification, anomaly detection, evidence.</p>
+<p>Flow: user/process → security event → audit record → audit trail → review. Steps: <b>Record</b> (capture), <b>Preserve</b> (store sequence), <b>Investigate</b> (reconstruct, examine violations), <b>Accountability</b> (link actions to users/processes).</p>
+<p><b>NISTIR 5153</b> (Minimum Security Requirements for Multi-User Operating Systems) – audit requirements:</p>
+<ol><li>Mechanism to generate an audit trail supporting after-the-fact investigation of loss/impropriety.</li><li>End-to-end user accountability for all security-relevant events.</li><li>Protect the audit trail from unauthorized access.</li><li>Dynamically control, during normal operation, the types of events recorded.</li><li>Protect the audit control mechanisms from unauthorized access.</li><li>By default, write records for numerous specific security-related events.</li><li>Privileged mechanism to enable/disable recording of other events.</li><li>Each record identifies several specific data points at minimum.</li><li><mark>Password-challenge response strings must NOT be recorded.</mark></li><li>Option to enable/disable recording invalid user IDs on failed authentication.</li><li>Audit control data (e.g., event masks) survives restarts.</li><li>Automatically copy audit trail files to alternative storage after a customer-specifiable period.</li><li>(Repeat of #6 on the slide.)</li></ol>
+<p>Life cycle: <b>Configure → Record → Preserve → Archive</b>.</p>`],
+["11. Logical access controls",`<p>Software-based mechanisms restricting access to digital systems; they implement identification, authentication, authorization, accountability. Locations: <b>Operating system</b> (accounts, file permissions, login policies), <b>Application</b> (roles, session controls, feature permissions), <b>Database</b> (users, roles & privileges, views), <b>Network/security</b> (AAA services, gateways, security software).</p>
+<p>Mapping: Identification = username/ID · Authentication = password/token/biometric · Authorization = permissions/roles/ACLs · Accountability = logs/audit records. Example: an LMS uses accounts to identify, MFA to authenticate, course roles to authorize, logs for accountability.</p>`]
+];
+$("#explain").innerHTML="<h2>Deep explanation</h2><p class='tag'>Tap a card to open/close. <button onclick=\"document.querySelectorAll('#explain details').forEach(d=>d.open=true)\">Open all</button> <button onclick=\"document.querySelectorAll('#explain details').forEach(d=>d.open=false)\">Close all</button></p>"+E.map((e,i)=>`<details ${i<1?"open":""}><summary>${e[0]}</summary><div>${e[1]}</div></details>`).join("");
+
+$("#summary").innerHTML=`<h2>Smart summary</h2>
+<details open><summary>Core ideas</summary><div><ul>
+<li><b>Access</b> = information flow subject → object. <b>Subject</b> active · <b>Object</b> passive.</li>
+<li><b>IAAA</b>: Identify (claim) → Authenticate (prove) → Authorize (permit) → Account (record).</li>
+<li><b>CIA</b>: Confidentiality = no unauthorized read · Integrity = no unauthorized write · Availability = there when needed.</li>
+<li><b>Integrity trio</b>: prevent · detect · recover. <b>Availability trio</b>: timely access · continuity · recovery.</li>
+<li>Choose controls by <b>E-D-S</b>: Environment, Data classification, Security goals.</li></ul></div></details>
+<details open><summary>Identity & credentials</summary><div><ul>
+<li>Identifier: <b>unique, standardized, nondescriptive, not shared</b>; not secret. Authenticator: secret/protected.</li>
+<li>Factors: <b>Know</b> (password, PIN) · <b>Have</b> (smart card, token, app) · <b>Are</b> (fingerprint, face, iris, voice) · Do (typing/signature) · Where (network, device, country).</li>
+<li><b>MFA</b> = different categories. Password + PIN ≠ MFA.</li>
+<li>Biometrics: can’t be forgotten, but can be spoofed and can’t be reset.</li></ul></div></details>
+<details open><summary>Authorization & audit</summary><div><ul>
+<li>Authorization uses an <b>access control matrix</b> (subject × object × action → allow/deny).</li>
+<li>Audit trail answers <b>Who/What/When/Where/Result</b>; protect it; never log password strings; archive it.</li>
+<li>Logical controls live in <b>OS, application, database, network</b>.</li></ul></div></details>`;
+
+$("#memory").innerHTML=`<h2>Memory lab</h2>
+<details open><summary>Mnemonics</summary><div><ul>
+<li><b>IAAA</b> → “<i>I Ask, Authenticate, Allow, Archive</i>” (Identify, Authenticate, Authorize, Account).</li>
+<li><b>CIA</b> → <b>R</b>ead = Confidentiality, <b>W</b>rite = Integrity, <b>W</b>hen-needed = Availability (“C-R, I-W, A-When”).</li>
+<li><b>Factors</b> → <b>K-H-A</b>: Know, Have, Are (+ Do, Where).</li>
+<li><b>Integrity</b> → <b>P-D-R</b>: Prevent, Detect, Recover. <b>Audit questions</b> → <b>5 W</b>: Who, What, When, Where, Result.</li>
+<li><b>Audit life cycle</b> → <b>C-R-P-A</b>: Configure, Record, Preserve, Archive.</li>
+<li><b>Identifier</b> → <b>U-S-N-N</b>: Unique, Standardized, Nondescriptive, Not shared.</li></ul></div></details>
+<details open><summary>Compare similar concepts</summary><div class="tw"><table>
+<tr><th></th><th>Authentication</th><th>Authorization</th></tr><tr><td>Question</td><td>Who are you?</td><td>What may you do?</td></tr><tr><td>Based on</td><td>Credentials</td><td>Rights, clearance, groups, matrix</td></tr><tr><td>Order</td><td>Before</td><td>After</td></tr></table>
+<table><tr><th></th><th>Subject</th><th>Object</th></tr><tr><td>Nature</td><td>Active</td><td>Passive</td></tr><tr><td>Examples</td><td>User, process, program</td><td>File, database, service, device</td></tr></table>
+<table><tr><th></th><th>Identifier</th><th>Authenticator</th></tr><tr><td>Role</td><td>Claims account</td><td>Proves claim</td></tr><tr><td>Secret?</td><td>Generally no</td><td>Yes, protect it</td></tr><tr><td>Example</td><td>Student ID</td><td>Password, token</td></tr></table>
+<table><tr><th></th><th>Confidentiality</th><th>Integrity</th><th>Availability</th></tr><tr><td>Violated by</td><td>Unauthorized disclosure</td><td>Unauthorized change</td><td>Outage / no timely access</td></tr><tr><td>Example</td><td>Seeing another student’s finances</td><td>Altered grade</td><td>Portal down at registration</td></tr><tr><td>Controls</td><td>Encryption, views, masking</td><td>Logs, checksums, backups</td><td>Redundancy, failover</td></tr></table></div></details>
+<details open><summary>Common traps</summary><div>
+<div class="trap">Authenticated ≠ authorized.</div><div class="trap">Password + PIN is NOT multi-factor (both “know”).</div>
+<div class="trap">Availability ≠ “system is online”. Exam questions before the exam need confidentiality, not availability.</div>
+<div class="trap">A biometric is not automatically more secure, and can’t be changed after compromise.</div>
+<div class="trap">Location/behavior signals are supplementary, not stand-alone proof.</div>
+<div class="trap">Never record password strings in the audit trail. Identification and authentication together are a two-step process.</div></div></details>
+<p class="tag">Spaced repetition: review this tab today, tomorrow, in 3 days, in 7 days, then retake the MCQs each time, focusing on the ones you missed.</p>`;
+
+const M=[
+["Access is best defined as:",["A password check","The flow of information between a subject and an object","A firewall rule","A backup process"],1,"Core definition from the slides."],
+["Which is a subject?",["A database","A file","A running process requesting data","A printer"],2,"Subjects are active entities; the others are passive objects."],
+["A student views their transcript. The transcript is the:",["Subject","Object","Authenticator","Identifier"],1,"Passive resource being accessed."],
+["“Who are you?” is answered by:",["Authentication","Identification/authentication","Authorization","Auditing"],1,"Identification claims, authentication proves; together they answer who you are. Authorization answers what you may do."],
+["Correct IAAA order:",["Authenticate, Identify, Authorize, Account","Identify, Authorize, Authenticate, Account","Identify, Authenticate, Authorize, Account","Authorize, Identify, Account, Authenticate"],2,"I → A → A → A."],
+["“No unauthorized read” describes:",["Integrity","Availability","Confidentiality","Accountability"],2,"Confidentiality = no unauthorized read; integrity = no unauthorized write."],
+["Changing a grade without permission, with no disclosure and the system online, violates:",["Confidentiality","Integrity","Availability","None"],1,"Unauthorized modification = integrity violation."],
+["Which is NOT a confidentiality mechanism?",["Encryption in transit and at rest","Data masking","Redundant failover servers","Controlled traffic flow"],2,"Failover supports availability."],
+["Integrity’s three actions are:",["Prevent, detect, recover","Identify, log, archive","Encrypt, mask, view","Backup, mirror, fail over"],0,"P-D-R."],
+["Primary concern for a registration portal at deadline:",["Confidentiality only","Availability + timeliness","Privacy only","Non-repudiation"],1,"Accurate data is useless if the portal is down."],
+["Primary concern for final exam questions before the exam:",["Availability","Timeliness","Confidentiality","Relevance"],2,"Prevent disclosure; high availability would conflict."],
+["Which factors guide control selection?",["Cost, brand, speed","Environment, data classification, security goals","Users, vendors, budget","Hardware, software, network only"],1,"E-D-S."],
+["Which is NOT a requirement for identifiers?",["Unique","Nondescriptive","Secret","Not shared"],2,"Identifiers are generally not secret; authenticators are."],
+["A PIN is:",["Type 1 – something you know","Type 2 – something you have","Type 3 – something you are","Somewhere you are"],0,"PIN, password, passphrase = know."],
+["A smart card is:",["Know","Have","Are","Do"],1,"Type 2 – possession."],
+["Which statement about biometrics is TRUE?",["They can’t be spoofed","They can be changed after compromise","They are always more secure than other factors","They can’t be forgotten but can be copied"],3,"Biometrics bind to the user, but can be spoofed and can’t be reset."],
+["Typing rhythm is an example of:",["Something you know","Something you do (behavioral)","Something you have","Authorization"],1,"Behavioral; often grouped with Type 3."],
+["Country inferred from the IP address is:",["Something you are","Somewhere you are","Something you have","Something you know"],1,"Context signal; supplementary."],
+["Which is true MFA?",["Password + PIN","Password + security question","Password + authenticator app code","Two passwords"],2,"Different categories: know + have."],
+["Password + PIN is not MFA because:",["PIN is too short","Both are the same factor type","PINs are not secret","Passwords are weak"],1,"Both are “something you know”."],
+["Authorization is evaluated mainly using:",["Audit trail","Access control matrix","Encryption key","CIA triad"],1,"Subject × object × action."],
+["In the matrix, which role has “No access” to Final Grades?",["Student","TA","Instructor","Admin"],1,"TA: No access (student reads own, instructor edits/publishes)."],
+["An audit trail can answer:",["Who, what, when, where, result","Only who","Only when","Which password was used"],0,"The 5 W."],
+["NISTIR 5153 says password-challenge character strings should be:",["Encrypted in the audit trail","Hashed in the audit trail","Not recorded in the audit trail","Archived after 30 days"],2,"Requirement 9."],
+["Audit control data (e.g., event masks) must:",["Be deleted at restart","Survive system restarts","Be visible to all users","Be stored on the same disk"],1,"Requirement 11."],
+["Audit-data life cycle:",["Record, delete, review, archive","Configure, record, preserve, archive","Identify, record, store, delete","Archive, record, configure, preserve"],1,"C-R-P-A."],
+["Logical access controls are:",["Locks and guards","Software-based mechanisms restricting digital access","Fire suppression","Network cables"],1,"Physical controls are the opposite."],
+["In an LMS, course roles implement which IAAA step?",["Identification","Authentication","Authorization","Accountability"],2,"Roles/permissions = authorization."],
+["Identified and authenticated user opens an instructor-only page and is denied. Why?",["Authentication failed","Authorization denied the action","Integrity failure","Audit trail missing"],1,"Authenticated ≠ authorized."],
+["Which choice is a data-classification example from the slides?",["Public, internal, confidential, restricted","Low, medium, high only","Read, write, execute","Know, have, are"],0,"Used to select controls."]
+];
+let sc=0,ans=0;
+function upd(){$("#sc").textContent=sc+" / "+ans+" answered · "+M.length+" total"}
+$("#mcq").innerHTML=`<h2>MCQs (${M.length})</h2><p><span class="score" id="sc"></span> <button onclick="rmcq()">Reset</button></p><div id="ql"></div>`;
+function rmcq(){sc=0;ans=0;$("#ql").innerHTML=M.map((m,i)=>`<div class="q" id="q${i}"><div class="tag">Q${i+1}</div><b>${m[0]}</b>${m[1].map((o,j)=>`<button class="o" onclick="pick(${i},${j})">${"ABCD"[j]}. ${o}</button>`).join("")}<div class="ex" id="e${i}"></div></div>`).join("");upd()}
+function pick(i,j){const q=$("#q"+i);if(q.dataset.d)return;q.dataset.d=1;const m=M[i];ans++;if(j===m[2])sc++;q.querySelectorAll(".o").forEach((b,k)=>{if(k===m[2])b.classList.add("c");else if(k===j)b.classList.add("w")});const e=$("#e"+i);e.innerHTML=(j===m[2]?"✅ Correct. ":"❌ Correct answer: "+"ABCD"[m[2]]+". ")+m[3];e.classList.add("s");upd()}
+rmcq();
+
+const W=[
+["Define access, subject and object. Give an example.",`Access is the flow of information between a subject and an object. A subject is an active entity (user, process, program) that requests access; an object is a passive resource (file, database, service, device) that is accessed. Example: a student (subject) requests a transcript (object) in the student portal and the system checks whether the request is allowed.`],
+["Differentiate authentication and authorization.",`Authentication verifies that a claimed identity is genuine by checking credentials against stored information (“Who are you?”). Authorization determines what an authenticated subject may do to a specific object using rights/privileges, usually an access control matrix (“What may you do?”). Authenticated does not mean authorized: a student who logs in can still be denied the instructor grade editing page.`],
+["Explain the CIA triad with a university example for each.",`Confidentiality: no unauthorized read; a student sees their own financial status, not others’. Integrity: no unauthorized write; accurate, complete data, with prevent/detect/recover; an unauthorized grade change violates it even with no disclosure. Availability: authorized users have timely access when needed, via continuity and recovery; the registration portal stays reachable through redundancy and failover. Controls are chosen by asset and context.`],
+["Describe the four IAAA steps and show how they work in a university login.",`Identification: student enters account ID (claim). Authentication: proves it with password/MFA. Authorization: system checks the matrix and permits only authorized course resources. Accountability: access is recorded in audit logs/audit trail so actions are traceable to the user.`],
+["List and explain the authentication factor types. What makes MFA valid?",`Type 1 know (password, PIN, passphrase); Type 2 have (smart card, hardware token, authenticator app; stolen device problem); Type 3 are (fingerprint, face, iris, voice; spoofable and cannot be changed); something you do (typing/signature dynamics); somewhere you are (network, device, country; supplementary). MFA needs factors from different categories, e.g., password + authenticator code. Password + PIN is not true MFA.`],
+["Explain auditing and the main NISTIR 5153 audit requirements.",`Auditing records and reviews security-relevant events, producing audit trails that answer who/what/when/where/result and support investigation, policy verification, anomaly detection and evidence. NISTIR 5153 requires: a trail supporting after-the-fact investigation; end-to-end accountability; protection of the trail and its control mechanisms; dynamic and privileged control of recorded event types; default records for key events; sufficient data points per record; no recording of password strings; optional logging of invalid user IDs; control data surviving restarts; automatic copying to alternative storage. Life cycle: configure, record, preserve, archive.`]
+];
+$("#written").innerHTML="<h2>Written questions</h2><p class='tag'>Try to answer first, then reveal the model answer.</p>"+W.map((w,i)=>`<details><summary>Q${i+1}. ${w[0]}</summary><div><div class="box">${w[1]}</div></div></details>`).join("");
+
+$("#revision").innerHTML=`<h2>Night-before cheat sheet</h2>
+<div class="box"><b>Access</b> = info flow subject (active) → object (passive).<br><b>IAAA</b>: Identify (claim) → Authenticate (prove) → Authorize (permit) → Account (log).<br><b>CIA</b>: C = no unauthorized read · I = no unauthorized write · A = timely access when needed.</div>
+<ul><li>Integrity: <b>prevent, detect, recover</b>. Availability: <b>timely access, continuity, recovery</b>.</li>
+<li>Registration portal → availability + timeliness. Exam questions → confidentiality.</li>
+<li>Control selection: <b>Environment, Data classification, Security goals</b> → assess, classify, define CIA, choose.</li>
+<li>Identifier: <b>unique, standardized, nondescriptive, not shared</b>; not secret.</li>
+<li>Factors: <b>Know</b> (password, PIN) · <b>Have</b> (card, token, app) · <b>Are</b> (biometrics) · Do · Where (supplementary).</li>
+<li>MFA = different categories. Password + PIN ✗.</li>
+<li>Biometrics: spoofable, can’t be reset.</li>
+<li>Matrix: subject × object × action → allow/deny. TA has no access to final grades.</li>
+<li>Audit trail: <b>Who, What, When, Where, Result</b>; Record → Preserve → Investigate → Accountability.</li>
+<li>NISTIR 5153: protect trail & controls · no password strings · survives restarts · copy to alternative storage. Life cycle: Configure, Record, Preserve, Archive.</li>
+<li>Logical controls: <b>OS, Application, Database, Network</b>.</li></ul>
+<div class="trap">Traps: authenticated ≠ authorized · availability ≠ online · biometrics ≠ always stronger.</div>`;
+show("explain");
+</script></body></html>

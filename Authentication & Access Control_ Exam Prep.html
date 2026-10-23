@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Authentication &amp; Access Control: Exam Prep</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#16202e;--mute:#5b6676;--line:#dde1e8;--acc:#1f4fd8;--accbg:#e6edff;--ok:#16794a;--okbg:#e2f5ea;--bad:#b3261e;--badbg:#fde8e6;--hi:#fff1b8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151d;--card:#18202b;--ink:#e8ecf2;--mute:#9aa6b6;--line:#2a3441;--acc:#7da2ff;--accbg:#1d2a4a;--ok:#5fd596;--okbg:#14301f;--bad:#ff8a80;--badbg:#3a1a18;--hi:#5a4a10}}
+:root[data-theme="dark"]{--bg:#10151d;--card:#18202b;--ink:#e8ecf2;--mute:#9aa6b6;--line:#2a3441;--acc:#7da2ff;--accbg:#1d2a4a;--ok:#5fd596;--okbg:#14301f;--bad:#ff8a80;--badbg:#3a1a18;--hi:#5a4a10}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.bar{max-width:880px;margin:auto;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font:700 1.15rem/1.2 Georgia,"Times New Roman",serif;margin:0;flex:1 1 220px}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+button,summary{font:inherit}
+nav button,.tog{border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer}
+nav button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+main{max-width:880px;margin:auto;padding:20px 16px 60px}
+section{display:none}section.on{display:block;animation:in .2s ease}
+@keyframes in{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){section.on{animation:none}}
+h2{font:700 1.5rem/1.25 Georgia,serif;margin:0 0 14px}
+h3{font:700 1.05rem/1.3 Georgia,serif;margin:22px 0 8px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0}
+summary{cursor:pointer;padding:12px 16px;font-weight:600}
+details>div{padding:0 16px 14px}
+mark{background:var(--hi);color:inherit;padding:0 3px;border-radius:3px}
+.tip{border-left:4px solid var(--acc);background:var(--accbg);padding:10px 14px;margin:12px 0;border-radius:0 8px 8px 0}
+.trap{border-left:4px solid var(--bad);background:var(--badbg);padding:10px 14px;margin:12px 0;border-radius:0 8px 8px 0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--accbg)}
+ul{padding-left:20px}li{margin:3px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.q p{margin:0 0 8px;font-weight:600}
+.o{display:block;width:100%;text-align:left;margin:6px 0;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.o:hover:not(:disabled){border-color:var(--acc)}
+.o.ok{background:var(--okbg);border-color:var(--ok)}
+.o.no{background:var(--badbg);border-color:var(--bad)}
+.ex{display:none;margin-top:8px;color:var(--mute);font-size:.94rem}.ex.show{display:block}
+.lv{font-weight:400;font-size:.8rem;color:var(--mute);margin-left:6px}
+#score{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;z-index:4}
+</style>
+</head>
+<body>
+<header><div class="bar"><h1>Authentication &amp; Access Control</h1>
+<nav id="nav"></nav><button class="tog" id="theme" aria-label="Toggle dark or light mode">Dark / Light</button></div></header>
+<main>
+
+<section id="explain"><h2>Explanation</h2>
+<p>Every secure system answers two questions in order: <mark>who are you?</mark> (authentication) and <mark>what may you do?</mark> (authorization). Part A covers the first, Part B the second. Open each block to study it.</p>
+<div class="tip"><b>Recap:</b> Identification → Authentication → Authorization → Accountability. Factors: Type 1 know, Type 2 have, Type 3 are, Type 4 do / somewhere you are. <mark>MFA = two or more factors of different types.</mark> Password + PIN is still one type.</div>
+
+<details open><summary>1. Identification vs authentication</summary><div>
+<p><b>Identification</b> = claiming an identity (username, usually public). <b>Authentication</b> = proving it with a private factor, comparing it to the database of valid accounts. Neither alone gives access. <i>Analogy:</i> saying your name at the airport (identification) vs showing your passport (authentication).</p></div></details>
+
+<details><summary>2. Passwords: weaknesses and types</summary><div>
+<p>Weaknesses: easy to guess, written down, shared or reused, stolen (observation, replay, database theft), sent in clear text or weakly encrypted, too short.</p>
+<div class="tw"><table><tr><th>Type</th><th>Definition</th><th>Key point</th></tr>
+<tr><td>Static</td><td>Always the same</td><td>Risk grows the longer it is used</td></tr>
+<tr><td>Dynamic</td><td>Changes after a time interval or number of uses</td><td>Limits how long a stolen password works</td></tr>
+<tr><td>One-time (OTP)</td><td>Dynamic password that changes every use</td><td>Strongest in concept; usually token-generated</td></tr>
+<tr><td>Passphrase</td><td>Long string, often a modified sentence (BlueRiverCoffeeMorning)</td><td>Hard to brute-force, easy to remember</td></tr>
+<tr><td>Composition</td><td>Unrelated words joined by number/symbol (Book#River9), often system-generated</td><td>Weak if the generating pattern is discovered</td></tr>
+<tr><td>Cognitive</td><td>Answers to personal questions (favorite color)</td><td>Weak: answers often public; do not use</td></tr></table></div></div></details>
+
+<details><summary>3. Password policy: traditional vs NIST SP 800-63B-4 (2025)</summary><div>
+<p><b>Password policy</b> = system rules on length, age, character types and reuse.</p>
+<div class="tw"><table><tr><th>Traditional</th><th>Current guidance</th></tr>
+<tr><td>Change every 30–90 days</td><td>No forced periodic change; change only after compromise</td></tr>
+<tr><td>Require upper, lower, digits, symbols</td><td>No composition rules; length matters more</td></tr>
+<tr><td>Minimum 8 characters</td><td>At least 15 if password is the only factor; 8 with MFA</td></tr>
+<tr><td>Security questions and hints</td><td>Do not use them</td></tr>
+<tr><td>Short maximum; paste blocked</td><td>Allow 64+ characters, paste, password managers</td></tr>
+<tr><td>Not required</td><td>Reject common, expected and breached passwords</td></tr></table></div></div></details>
+
+<details><summary>4. Password attacks and defenses</summary><div>
+<div class="tw"><table><tr><th>Attack</th><th>What it is</th><th>Main defense</th></tr>
+<tr><td>Sniffing</td><td>Capture traffic to replay a password</td><td>Encrypted connection; OTPs</td></tr>
+<tr><td>Password file access</td><td>Steal database, crack offline</td><td>Salted, slow hashing</td></tr>
+<tr><td>Dictionary</td><td>Common words and passwords</td><td>Block common passwords; rate limiting; MFA</td></tr>
+<tr><td>Brute force</td><td>Every possible combination</td><td>Long passwords; rate limit (online); slow hash (offline)</td></tr>
+<tr><td>Hybrid</td><td>Dictionary, then small variations</td><td>Long, uncommon passwords</td></tr>
+<tr><td>Credential stuffing</td><td>Leaked username/password pairs tried on other sites</td><td>Unique passwords; MFA; breached checks</td></tr>
+<tr><td>Password spraying</td><td>One common password against many accounts</td><td>MFA; monitoring; rate limiting</td></tr>
+<tr><td>Social engineering</td><td>Tricking users into revealing or approving</td><td>Training; strong MFA</td></tr></table></div></div></details>
+
+<details><summary>5. Storing passwords: salted, slow hashes</summary><div>
+<p><b>Hash</b> = one-way function. The system hashes what you type and compares with the stored hash; it never decrypts. <b>Salt</b> = random value per password so identical passwords get different hashes. <b>Slow hash</b> makes each guess costly even with a stolen database. Stored = salt + hash.</p>
+<p><b>Account lockout / rate limiting</b> disables an account after set failed logons. It stops <i>online</i> guessing but does <mark>not</mark> protect stolen hashes. Other measures: show last logon time/place, audit logons (IDS alerts), never send passwords in clear text or email, disable inactive accounts, delete unused ones, and if the admin password is compromised change <b>every</b> password.</p></div></details>
+
+<details><summary>6. Biometrics</summary><div>
+<p><b>Type 3</b>, physiological (fingerprint, face, iris, retina, palm, hand geometry) or behavioral (voice, signature dynamics, keystroke dynamics). Process: capture sample → convert to binary → store as reference template → compare live sample → accept if match passes threshold.</p>
+<ul><li><b>Identification (1:N):</b> biometric instead of username; searched against all templates. Physical access (door).</li>
+<li><b>Authentication (1:1):</b> username first, compare with that one template. Logical access (login).</li>
+<li><b>FRR</b> = false rejections ÷ valid attempts (Type 1 error, threshold too strict). <b>FAR</b> = false acceptances ÷ unauthorized attempts (Type 2 error, threshold too lenient).</li>
+<li><b>CER/EER</b> = point where FRR = FAR. Same test conditions: <mark>lowest CER = most accurate</mark>.</li>
+<li><b>Enrollment:</b> storing the reference template; re-enroll when traits change. <b>Throughput:</b> scan and process time. <b>Acceptance:</b> privacy and comfort concerns.</li>
+<li>Limits: can be spoofed (needs liveness detection); a stolen biometric cannot be changed.</li></ul></div></details>
+
+<details><summary>7. Tokens and single sign-on</summary><div>
+<div class="tw"><table><tr><th>Token</th><th>How it works</th></tr>
+<tr><td>Static</td><td>Fixed value, mostly identification (smart card, swipe card)</td></tr>
+<tr><td>Synchronous dynamic</td><td>New password at fixed time intervals; clocks synced (authenticator app)</td></tr>
+<tr><td>Asynchronous dynamic</td><td>New password on an event, e.g. button press</td></tr>
+<tr><td>Challenge-response</td><td>System sends challenge; token computes response</td></tr></table></div>
+<p><b>SSO:</b> authenticate once, then access resource after resource. <b>Pros:</b> one strong password to memorize; easier administration. <b>Con:</b> if the SSO account is compromised, every connected service is exposed, so protect it with MFA. Organizations trusting one identity provider let users log in once across organizations. (Kerberos tickets are listed in the outline; the slides give no further detail.)</p></div></details>
+
+<details><summary>8. Access control: discretionary vs nondiscretionary</summary><div>
+<p>Authorization comes only <i>after</i> authentication. <b>DAC:</b> the owner decides, based on subject identity, via ACLs. Flexible and simple, but users can over-share and malware runs with the user’s rights. <b>Nondiscretionary:</b> a central rule set governs everything, not owner choice or identity: MAC, lattice, RBAC, TBAC, rule-based, ABAC.</p>
+<div class="tw"><table><tr><th>Subject</th><th>File1</th><th>File2</th><th>Printer</th></tr><tr><td>Ahmed</td><td>R,W</td><td>R</td><td>Print</td></tr><tr><td>Omar</td><td>R</td><td>None</td><td>Print</td></tr><tr><td>Sara</td><td>None</td><td>R,W</td><td>None</td></tr></table></div>
+<p><b>ACL = a column</b> (bound to an object: who can use File1?). <b>Capability table = a row</b> (bound to a subject: what can Ahmed use?).</p></div></details>
+
+<details><summary>9. MAC, hierarchical / compartmentalized / hybrid, and lattice</summary><div>
+<p><b>MAC</b> uses labels: clearance (user level) and classification (data level). Access at the same or lower level and only with <b>need to know</b>. Each label is a security domain. Centrally enforced, owners cannot override; less flexible and scalable than DAC. Military, highest first: Top Secret, Secret, Confidential, Sensitive but Unclassified, Unclassified. Commercial: confidential, proprietary, private, sensitive, public.</p>
+<ul><li><b>Hierarchical:</b> ordered levels (Public &lt; Sensitive &lt; Confidential &lt; Secret &lt; Top Secret).</li>
+<li><b>Compartmentalized:</b> separate areas; Project A clearance does not give Project B, even at the same level.</li>
+<li><b>Hybrid:</b> levels + compartments. Secret + Project A can read Secret Project A, not necessarily Secret Project B.</li></ul>
+<p><b>Lattice-based:</b> labels in a structured order; every subject–object relationship has an <b>upper bound</b> and <b>lower bound</b> (least upper bound, greatest lower bound). Built to control information flow (confidentiality); MAC is a common example. Example range: Private (upper) to Sensitive (lower); Confidential/Proprietary and Public are no access.</p></div></details>
+
+<details><summary>10. RBAC, rule-based, ABAC</summary><div>
+<p><b>RBAC:</b> access follows the job role (users → roles → permissions: Instructor edits final grades, TA enters coursework marks, Registrar manages enrollment). <b>TBAC</b> uses assigned tasks instead. Easy with staff turnover. In formal RBAC rights come only through roles; DAC groups still let users get rights directly and the owner decides.</p>
+<p><b>Rule-based:</b> predefined global rules for everyone (time, network, device). Firewall rules checked in order, ending with implicit <b>deny</b>. “No logins outside 08:00–18:00”, “block USB on lab PCs”. One change applies everywhere.</p>
+<p><b>ABAC:</b> rules over attributes of subject (role, department), object (type, sensitivity), action (read, edit, delete) and environment (time, location, device). Example: allow read patient_record IF role = doctor AND same ward AND within shift. Most flexible, most complex.</p>
+<div class="trap"><b>Trap:</b> Role-based = who are you (your job). Rule-based = what rule applies to this request (same for all).</div></div></details>
+
+<h3>Part C topics</h3>
+<p>The outline lists centralized vs decentralized administration, account administration, least privilege and separation of duties, but the slides contain no definitions for them. Add your own lecture notes here before the exam.</p>
+</section>
+
+<section id="summary"><h2>Smart summary</h2>
+<ul>
+<li><b>Auth flow:</b> identify (claim, public) → authenticate (prove, private) → authorize → account.</li>
+<li><b>Factors:</b> know / have / are / do + where. <mark>MFA needs different types.</mark></li>
+<li><b>Passwords:</b> static &lt; dynamic &lt; <b>OTP</b>; passphrase long and memorable; composition pattern-weak; cognitive = avoid.
+<ul><li>NIST 2025: length ≥ 15 alone (8 with MFA), no composition, no forced rotation, no hints, allow 64+ and paste, block breached.</li></ul></li>
+<li><b>Attacks:</b> sniffing, file theft, dictionary, brute force, hybrid, <b>stuffing</b> (reused creds), <b>spraying</b> (one password, many accounts), social engineering.</li>
+<li><b>Storage:</b> salted + slow hash, never decrypt. Lockout stops online only.</li>
+<li><b>Biometrics:</b> 1:N identify (doors), 1:1 authenticate (login). FRR = Type 1, FAR = Type 2, <b>lowest CER wins</b>.</li>
+<li><b>Tokens:</b> static, synchronous (time), asynchronous (event), challenge-response. <b>SSO:</b> convenience vs single point of failure → add MFA.</li>
+<li><b>DAC</b> owner/ACL · <b>MAC</b> labels · <b>Lattice</b> bounds · <b>RBAC</b> job · <b>Rule-based</b> global rules · <b>ABAC</b> attributes.</li></ul>
+<h3>Memory triggers</h3>
+<div class="tip"><b>Know, Have, Are</b> = Types 1, 2, 3.<br><b>FRR = Rejects Real people; FAR = Accepts Anyone.</b> FRR is Type 1, FAR is Type 2 (R before A, 1 before 2).<br><b>ACL = Column = Object; Capability = Row = Subject.</b><br><b>MAC levels: “Tall Sailors Command Small Units”</b> = Top secret, Secret, Confidential, Sensitive, Unclassified.<br><b>Hybrid = Hierarchy + compartments.</b><br><b>Spraying = one password sprayed over many accounts; stuffing = stuffed with leaked pairs.</b></div>
+<h3>Which model fits?</h3>
+<div class="tw"><table><tr><th>Scenario</th><th>Model</th></tr><tr><td>Students share files on Drive</td><td>DAC</td></tr><tr><td>Intelligence agency documents</td><td>MAC</td></tr><tr><td>Hospital, 2,000 staff, 40 job types</td><td>RBAC</td></tr><tr><td>University network firewall</td><td>Rule-based</td></tr><tr><td>Doctor sees own ward during shift</td><td>ABAC</td></tr></table></div>
+<h3>Common mistakes</h3>
+<div class="trap">Password + PIN is <b>not</b> MFA · lockout does not protect stolen hashes · OTP is not the same as any dynamic password · compartment clearance depends on the project, not only the level · RBAC ≠ rule-based · biometrics cannot be reset · SSO needs MFA.</div>
+<p><b>Spaced repetition plan:</b> review today, tomorrow, day 3, day 7. Redo missed MCQs each time.</p>
+</section>
+
+<section id="mcq"><h2>Practice MCQs</h2>
+<div id="score"><span id="sc">Score: 0 / 0</span><button class="tog" id="reset">Reset</button></div>
+<div id="qs"></div></section>
+
+<section id="written"><h2>Written questions</h2>
+<h3>Short answer</h3><div id="sa"></div><h3>Long form</h3><div id="la"></div></section>
+
+<section id="rev"><h2>Revision sheet</h2>
+<div class="tip"><b>Night-before checklist:</b> say each table aloud from memory, then check it.</div>
+<div class="tw"><table><tr><th>Topic</th><th>Must remember</th></tr>
+<tr><td>Factors</td><td>Know / Have / Are / Do+Where. MFA = different types.</td></tr>
+<tr><td>OTP</td><td>Dynamic password changing every use; token-generated</td></tr>
+<tr><td>NIST 2025</td><td>≥15 alone, 8 with MFA, 64+ allowed, no rotation, no composition, no hints, block breached</td></tr>
+<tr><td>Storage</td><td>Salt + slow hash; compare, never decrypt</td></tr>
+<tr><td>Lockout</td><td>Stops online guessing, not stolen hashes</td></tr>
+<tr><td>Stuffing / spraying</td><td>Leaked pairs on other sites / one password on many accounts</td></tr>
+<tr><td>Biometrics</td><td>1:N door, 1:1 login · FRR = FRR strict (Type 1) · FAR lenient (Type 2) · CER lowest best</td></tr>
+<tr><td>Tokens</td><td>Static · synchronous (time) · asynchronous (event) · challenge-response</td></tr>
+<tr><td>SSO</td><td>One login, many services; compromise exposes all; add MFA</td></tr>
+<tr><td>DAC</td><td>Owner decides, identity, ACL; flexible, over-sharing risk</td></tr>
+<tr><td>MAC</td><td>Labels + clearance + need to know; central; hierarchical / compartmentalized / hybrid</td></tr>
+<tr><td>Lattice</td><td>Upper and lower bound; information flow</td></tr>
+<tr><td>RBAC / TBAC</td><td>Job role / task; good with turnover</td></tr>
+<tr><td>Rule-based</td><td>Global rules, firewall, implicit deny</td></tr>
+<tr><td>ABAC</td><td>Subject + object + action + environment attributes; most flexible, complex</td></tr>
+<tr><td>ACL / capability</td><td>Column (object) / row (subject)</td></tr></table></div></section>
+</main>
+<script>
+var S=[["explain","Explanation"],["summary","Summary"],["mcq","MCQs"],["written","Written"],["rev","Revision"]];
+var nav=document.getElementById("nav");
+function show(id){S.forEach(function(s){document.getElementById(s[0]).classList.toggle("on",s[0]===id)});
+ nav.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.id===id)});window.scrollTo(0,0)}
+S.forEach(function(s){var b=document.createElement("button");b.textContent=s[1];b.dataset.id=s[0];b.onclick=function(){show(s[0])};nav.appendChild(b)});
+show("explain");
+document.getElementById("theme").onclick=function(){var r=document.documentElement;
+ var d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+
+var Q=[
+["Password + PIN is best described as:",["Multi-factor authentication","Single-factor (both Type 1)","Two-step Type 2","Biometric"],1,"Both are something you know. MFA needs different types.","E"],
+["Claiming an identity, such as typing a username, is:",["Authentication","Authorization","Identification","Accountability"],2,"Identification is the claim; authentication is the proof.","E"],
+["A dynamic password that changes every time it is used is a:",["Passphrase","One-time password","Cognitive password","Static password"],1,"OTP: strongest in concept, usually generated by a token.","E"],
+["Which password type is weakest and should not be used?",["Passphrase","Composition","Cognitive","One-time"],2,"Cognitive answers (favorite color) are often public.","E"],
+["Under NIST SP 800-63B-4 (2025), passwords should be changed:",["Every 30 days","Every 90 days","Only after compromise","Every year"],2,"No forced periodic changes.","M"],
+["Minimum length when the password is the only factor (NIST 2025):",["8","12","15","64"],2,"15 alone; 8 with MFA. 64+ is the maximum you should allow.","M"],
+["Leaked username/password pairs from one site tried on other sites:",["Password spraying","Credential stuffing","Hybrid attack","Sniffing"],1,"Stuffing uses leaked pairs. Spraying uses one password on many accounts.","M"],
+["One common password tried against many accounts is:",["Brute force","Dictionary","Credential stuffing","Password spraying"],3,"Spraying avoids lockout by spreading attempts across accounts.","M"],
+["The purpose of a salt is to:",["Encrypt the password so it can be decrypted","Give identical passwords different hashes","Speed up hashing","Replace the hash"],1,"Salt is random per password; it defeats precomputed and identical-hash matches.","M"],
+["Account lockout does NOT protect against:",["Online brute force","Online dictionary attacks","Cracking of stolen password hashes","Guessing at the logon prompt"],2,"Lockout works at the prompt; offline cracking never touches it.","H"],
+["A door that opens by fingerprint alone uses:",["1:1 authentication","1:N identification","Capability table","Cognitive factor"],1,"No username, so the sample is searched against all templates.","M"],
+["The biometric threshold is made too strict. Which rises?",["FAR (Type 2)","FRR (Type 1)","CER","Throughput"],1,"Strict means valid users get rejected: false rejection.","H"],
+["Two biometric devices tested equally. The more accurate has:",["Highest CER","Lowest CER","Highest FAR only","Longest throughput"],1,"CER is where FRR = FAR; lower is better.","M"],
+["Which is a limitation of biometrics?",["Can be reset easily","A stolen biometric cannot be changed","Never spoofed","Needs no enrollment"],1,"Also spoofable, so readers need liveness detection.","E"],
+["Token generating a new password every 30 seconds with synced clocks:",["Asynchronous","Synchronous dynamic","Static","Challenge-response"],1,"Synchronous = time. Asynchronous = event such as a button press.","M"],
+["Main disadvantage of SSO:",["Weaker passwords","More administration","One compromised account exposes many services","Users memorize many passwords"],2,"So SSO must be protected with MFA.","E"],
+["In DAC, who decides access?",["Central administrator","Security labels","Object owner","Policy engine"],2,"Based on subject identity, usually via ACLs.","E"],
+["“Who can use File1?” is answered by the:",["Capability table row","ACL (column)","Clearance label","Role"],1,"ACL is bound to an object (column). Capability is bound to a subject (row).","M"],
+["User has Secret clearance with Project A only. Which model combines levels and compartments?",["Hierarchical","Compartmentalized","Hybrid","Rule-based"],2,"Hybrid = hierarchical levels + compartments. They cannot assume Secret Project B.","H"],
+["Lattice-based access control defines:",["Owner permissions","Upper and lower bounds per subject–object relationship","Global firewall rules","Job roles"],1,"Built for information flow control (confidentiality).","M"],
+["A hospital with 2,000 staff in 40 job types best fits:",["DAC","MAC","RBAC","Rule-based"],2,"Access follows the job; easy with staff turnover.","E"],
+["“Block USB storage on lab PCs” is an example of:",["RBAC","Rule-based","DAC","Lattice"],1,"Global rule applied to everyone regardless of role.","M"],
+["Doctor reads records only for own ward during own shift:",["RBAC","DAC","ABAC","MAC"],2,"Depends on subject, object and environment attributes. Role alone is not enough.","H"],
+["Which is NOT a nondiscretionary model?",["MAC","RBAC","ABAC","DAC"],3,"DAC is discretionary; the others use central rules.","E"]
+];
+var lv={E:"easy",M:"medium",H:"hard"},done=0,right=0,box=document.getElementById("qs");
+function sc(){document.getElementById("sc").textContent="Score: "+right+" / "+done+" (of "+Q.length+")"}
+function build(){box.innerHTML="";done=0;right=0;sc();
+ Q.forEach(function(q,i){var d=document.createElement("div");d.className="q";
+  var p=document.createElement("p");p.textContent=(i+1)+". "+q[0];var s=document.createElement("span");s.className="lv";s.textContent=lv[q[4]];p.appendChild(s);d.appendChild(p);
+  var ex=document.createElement("div");ex.className="ex";ex.textContent=q[3];var bs=[],ans=false;
+  q[1].forEach(function(t,j){var b=document.createElement("button");b.className="o";b.textContent=String.fromCharCode(65+j)+". "+t;
+   b.onclick=function(){if(ans)return;ans=true;done++;if(j===q[2]){right++;b.classList.add("ok")}else{b.classList.add("no");bs[q[2]].classList.add("ok")}
+    bs.forEach(function(x){x.disabled=true});ex.classList.add("show");sc()};bs.push(b);d.appendChild(b)});
+  d.appendChild(ex);box.appendChild(d)})}
+document.getElementById("reset").onclick=build;build();
+
+var SA=[
+["Define identification and authentication, and explain why both are needed.","Identification is the subject claiming an identity (a username, usually public). Authentication is proving that claim with a private factor, compared against the database of valid accounts. Neither alone grants access, and a system is only as secure as the secrecy of its factors."],
+["Why are salted hashes used instead of storing passwords?","A hash is one-way, so the system hashes the typed password and compares, never decrypting. A random salt makes identical passwords produce different hashes. A slow hash makes each guess costly, so a stolen database is hard to crack."],
+["Explain FRR, FAR and CER.","FRR is valid subjects wrongly rejected (Type 1, threshold too strict). FAR is unauthorized subjects wrongly accepted (Type 2, threshold too lenient). CER (EER) is where FRR equals FAR; under equal test conditions the lowest CER is the most accurate device."],
+["Differentiate ACL and capability table.","Both come from the access control matrix. An ACL is one column, bound to an object, listing who may access it. A capability table is one row, bound to a subject, listing what it may access."],
+["Distinguish role-based from rule-based access control.","RBAC grants permissions by job role (who you are in the organization). Rule-based applies predefined global rules to every request regardless of identity (such as firewall rules or time limits)."]];
+var LA=[
+["Compare traditional password policy with NIST SP 800-63B-4 (2025) and justify the changes.","Traditional: change every 30–90 days, mandatory upper/lower/digit/symbol, minimum 8, security questions, short maximum, paste blocked. NIST 2025: no forced rotation (change only after compromise), no composition rules (length matters more), at least 15 characters if password is the only factor and 8 with MFA, no security questions or hints, allow 64+ characters, paste and password managers, and reject common, expected and breached passwords. Justification: forced rotation and composition rules lead users to predictable patterns and written-down passwords; length resists brute force; checking against breached lists blocks dictionary, stuffing and spraying attacks."],
+["Describe the main password attacks and one defense for each.","Sniffing: encrypted connection, OTPs. Password file access: salted slow hashing. Dictionary: block common passwords, rate limiting, MFA. Brute force: long passwords, rate limiting online, slow hashing offline. Hybrid: long uncommon passwords. Credential stuffing: unique passwords, MFA, breached-password checks. Password spraying: MFA, monitoring, rate limiting. Social engineering: training and strong MFA."],
+["Explain MAC, including hierarchical, compartmentalized and hybrid, and relate it to lattice-based control.","MAC uses classification labels: subjects have clearances, objects have classifications. Access is allowed at the same or lower level and only with need to know. It is centrally enforced so owners cannot override it; it is less flexible and scalable than DAC. Hierarchical orders levels from low to high; compartmentalized separates areas so access needs permission for that compartment; hybrid combines levels with compartments (Secret + Project A does not grant Secret Project B). Lattice-based control organizes labels in a structure and gives each subject–object relationship an upper and lower bound, controlling information flow for confidentiality. MAC is a common example."],
+["Compare DAC, RBAC and ABAC and recommend a model for a hospital.","DAC: the owner decides by identity with ACLs; flexible but users over-share and malware inherits rights. RBAC: administrator assigns permissions to job roles; easy with turnover. ABAC: a policy engine evaluates subject, object, action and environment attributes; most flexible but complex. A hospital with many staff in few job types suits RBAC; where access must depend on ward and shift, ABAC adds the needed attributes (for example doctor + same ward + within shift)."]];
+function qa(id,arr){var el=document.getElementById(id);arr.forEach(function(x,i){var d=document.createElement("details");var s=document.createElement("summary");s.textContent=(i+1)+". "+x[0];var c=document.createElement("div");c.textContent=x[1];d.appendChild(s);d.appendChild(c);el.appendChild(d)})}
+qa("sa",SA);qa("la",LA);
+</script>
+</body>
+</html>
