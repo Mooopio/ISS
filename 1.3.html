@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ISS Lecture 3 · Access Control Administration &amp; Monitoring — Exam Prep</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--tx:#1b2330;--mu:#5d6878;--ac:#3b6cf6;--ok:#12805c;--bad:#c23a3a;--hl:#fff3b8;--bd:#e1e5ec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141b;--card:#181e28;--tx:#e6eaf2;--mu:#9aa6b8;--ac:#7c9cff;--ok:#43c79a;--bad:#ff7b7b;--hl:#5a4a00;--bd:#2a3342;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10141b;--card:#181e28;--tx:#e6eaf2;--mu:#9aa6b8;--ac:#7c9cff;--ok:#43c79a;--bad:#ff7b7b;--hl:#5a4a00;--bd:#2a3342;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--bd);z-index:9;padding:10px 16px}
+.row{max-width:900px;margin:auto;display:flex;gap:8px;align-items:center}
+h1{font-size:1.05rem;margin:0;flex:1}
+nav{display:flex;gap:6px;overflow-x:auto;max-width:900px;margin:8px auto 0;padding-bottom:2px}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:6px 14px;white-space:nowrap;transition:.2s}
+button:hover{border-color:var(--ac)}button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:900px;margin:auto;padding:18px 16px 60px}
+section{display:none;animation:f .35s}section.on{display:block}@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:10px 0;padding:4px 16px}
+summary{cursor:pointer;font-weight:600;padding:10px 0}details[open]>summary{color:var(--ac)}
+h2{margin:6px 0 12px}h3{margin:14px 0 4px}
+mark{background:var(--hl);color:inherit;padding:0 3px;border-radius:3px}
+.box{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;padding:10px 14px;margin:10px 0}
+.warn{border-left-color:var(--bad)}.tip{border-left-color:var(--ok)}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:480px;background:var(--card)}th,td{border:1px solid var(--bd);padding:8px;text-align:left;vertical-align:top;font-size:.93rem}th{background:var(--bg)}
+.q{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 16px;margin:12px 0}
+.o{display:block;width:100%;text-align:left;border-radius:10px;margin:6px 0;white-space:normal}
+.o.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.o.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.ex{display:none;margin-top:8px;color:var(--mu)}.ex.show{display:block}
+.tag{font-size:.75rem;color:var(--mu)}#sc{font-weight:700;color:var(--ac)}
+ul{padding-left:20px}
+</style></head><body>
+<header><div class="row"><h1>🔐 ISS · Lecture 3 · Access Control Admin &amp; Monitoring</h1><button id="th" aria-label="Toggle theme">🌓</button></div>
+<nav id="nav"></nav></header>
+<main>
+<section id="explain"></section><section id="summary"></section><section id="memory"></section><section id="mcq"></section><section id="written"></section><section id="rev"></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const tabs=[['explain','Explanation'],['summary','Summary'],['memory','Memory'],['mcq','MCQs'],['written','Written'],['rev','Revision']];
+const nav=$('#nav');
+tabs.forEach(([id,t])=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>show(id);b.dataset.id=id;nav.appendChild(b)});
+function show(id){document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===id));nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));window.scrollTo({top:0,behavior:'smooth'});try{localStorage.setItem('isstab',id)}catch(e){}}
+$('#th').onclick=()=>{const r=document.documentElement;const d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#10141b';r.dataset.theme=d?'light':'dark'};
+const D=(t,h,o)=>`<details${o?' open':''}><summary>${t}</summary>${h}</details>`;
+
+$('#explain').innerHTML='<h2>Deep Explanation</h2>'+
+D('1. Centralized vs decentralized access control',`<p>Who makes the “yes/no” decision? One boss, or many local bosses?</p>
+<div class="tw"><table><tr><th></th><th>Centralized</th><th>Decentralized (distributed)</th></tr>
+<tr><th>Definition</th><td>All authorization verification by a <mark>single entity</mark>; one main authority decides</td><td>Verification by <mark>various entities</mark>; decisions distributed among several authorities</td></tr>
+<tr><th>Administration</th><td>Small team, lower overhead, one change affects the whole system</td><td>Several teams, higher overhead, hard to keep consistent</td></tr>
+<tr><th>Failure</th><td>Can be a <mark>single point of failure</mark> unless made redundant</td><td>No single point of failure</td></tr>
+<tr><th>Examples</th><td>AAA protocols: <b>RADIUS, TACACS+</b></td><td>Domains and trusts</td></tr></table></div>
+<div class="box tip">🧠 Analogy: one airport security desk for the whole country (easy to manage, but if it closes everything stops) vs. a desk at every airport (resilient, but rules drift apart).</div>`,1)+
+D('2. Access control administration',`<p><b>Definition:</b> tasks and duties assigned to an administrator to manage user accounts, access and accountability.</p>
+<p>The four principles (<b>identification, authentication, authorization, accountability</b>) become <mark>three responsibilities</mark>:</p>
+<ol><li><b>User account management</b>: creating, maintaining, closing accounts</li><li><b>Activity tracking</b>: activity auditing, account tracking, system monitoring</li><li><b>Access rights and permissions management</b></li></ol>`)+
+D('3. Account lifecycle: create, maintain, close',`<ul><li><b>Creating:</b> formal request from <mark>HR</mark> with the security level needed → verified by the <mark>department manager and security administrator</mark> → user is trained and <mark>signs the security policy</mark>.</li>
+<li><b>Maintaining:</b> mostly changing rights and privileges; same approval procedure; <mark>unauthorized changes are a serious risk</mark>.</li>
+<li><b>Closing:</b> disable, delete or revoke when an employee leaves; automate through HR; temporary staff get an <mark>expiration date</mark> programmed into their accounts.</li></ul>
+<div class="box"><b>Enrollment</b> = the initial creation of a new user account. It creates the identity and sets up authentication factors <i>after the person’s identity has been verified</i>.</div>`)+
+D('4. Activity tracking (account, log and system monitoring)',`<p>Without it, subjects <mark>cannot be held accountable</mark>. Event logs and system journals capture events, changes, messages and other data describing what happened on a system.</p>
+<ul><li><b>Why:</b> once identification, authentication and authorization are in place, tracking what each subject does (including how many times they access objects) gives direct, specific accountability.</li>
+<li><b>Uses:</b> accounts, event logs and journals rebuild the state of a server at any point in its timeline and support incident investigation.</li></ul>
+<p><i>Example:</i> an attacker gains an account through a vulnerable service; event logs and journals usually record parts of the incident.</p>`)+
+D('5. Privileges and related principles',`<ul><li><b>Privilege:</b> authorization to perform an operation or access a resource (ability to write, create, alter or delete data). Limiting write/alter/delete protects <mark>integrity</mark>; needs a defined job description for every user.</li>
+<li><b>Excessive privilege:</b> more access than the user’s tasks require; raises risk.</li>
+<li><b>Creeping privileges:</b> old permissions accumulate when a role changes and are never removed → leads to excessive privilege. Prevent with <mark>least privilege + regular access reviews</mark>.</li></ul>
+<div class="tw"><table><tr><th>Principle</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>Least privilege</td><td>Only the access work tasks require; blocked from everything else</td><td>A TA can enter marks but not change final grades</td></tr>
+<tr><td>Need to know</td><td>Even with clearance, access to a compartmentalized resource needs a work-related reason</td><td>A cleared nurse sees only her own patients’ records</td></tr>
+<tr><td>Implicit deny</td><td>What is not explicitly allowed is denied</td><td>Firewall’s last rule: “deny all”</td></tr></table></div>`)+
+D('6. Users, owners and custodians',`<div class="tw"><table><tr><th>Role</th><th>Definition</th><th>Typically</th></tr>
+<tr><td>User</td><td>Any subject accessing objects to do a task</td><td>End user</td></tr>
+<tr><td>Owner</td><td>Final corporate responsibility for <mark>classifying, labeling, protecting</mark> data; may be liable for negligence; <b>decides</b> protection requirements</td><td>Designated data owner, e.g. department head</td></tr>
+<tr><td>Custodian</td><td>Day-to-day storage, maintenance and technical protection per owner’s policies; <b>implements</b> requirements</td><td>IT staff, system security administrator</td></tr></table></div>
+<p><i>Student grades:</i> owner = dean (data owner), custodian = IT department, users = instructors and students.</p>`)+
+D('7. Separation of duties (SoD)',`<p>Prevents any single subject from circumventing or disabling security mechanisms. Sensitive tasks are divided among several people, so <mark>fraud would require collusion</mark>.</p>
+<ul><li><b>Static SoD:</b> privileges assigned by written policies that rarely change; certain roles are <i>never</i> assigned to the same person.</li><li><b>Dynamic SoD:</b> conflicting roles may be assigned but <i>cannot be exercised together</i> in the same context or transaction.</li></ul>
+<div class="tw"><table><tr><th>This function</th><th>Conflicts with</th></tr><tr><td>Request a payment</td><td>Approve the payment</td></tr><tr><td>Create user accounts</td><td>Audit user accounts</td></tr><tr><td>Write program code</td><td>Deploy it to production</td></tr><tr><td>Security administration</td><td>System administration</td></tr></table></div>`)+
+D('8. Chapter 2: access control and monitoring',`<p><b>Access control</b> = any hardware, software or administrative policy/procedure that: (1) grants or restricts access, (2) monitors and records access attempts, (3) identifies users attempting access, (4) determines whether access is authorized.</p>
+<p><b>Monitoring:</b> the programmatic means by which subjects are held accountable while authenticated; also the process of detecting unauthorized or abnormal activity.</p>
+<ul><li><b>Detects:</b> malicious actions by subjects, attempted intrusions, system failures.</li><li><b>Helps:</b> reconstruct events, provide evidence for prosecution, produce problem reports and analysis.</li></ul>`)+
+D('9. Logs, audit trails and data reduction',`<ul><li><b>Logs give:</b> accountability (subjects, objects, core functions); an <mark>audit trail</mark> (step-by-step history of an event); system health (crashes may mean faulty programs, corrupt drivers or intrusion); the cause of a failure.</li>
+<li><b>Problem:</b> too much data. <b>Solutions:</b></li></ul>
+<ul><li><b>Data reduction:</b> extract important details from huge log volumes.</li><li><b>Clipping level (threshold):</b> e.g. alert only after more than 5 failed logins.</li><li><b>Data mining tools:</b> search logs for suspicious patterns.</li><li><b>IDS:</b> automatically analyzes activity and alerts in real time.</li></ul>`)+
+D('10. Intrusion Detection System (IDS)',`<p><b>IDS:</b> monitors network or host activity, analyzes events and audit logs, detects suspicious behavior or policy violations, and generates alerts. It is primarily a <mark>technical detective control</mark>; automatic blocking is mainly an <mark>IPS</mark> function.</p>
+<ul><li><b>Intrusion:</b> a security-policy violation, usually against confidentiality, integrity or availability.</li><li><b>Monitors:</b> network traffic; host/system activity; audit logs and authentication events; file/configuration changes.</li>
+<li><b>Goal:</b> perpetrator accountability and timely, accurate response.</li><li><b>Detects:</b> unauthorized access attempts, malware activity, repeated failed logins, insider/policy-violating activity.</li>
+<li><b>Recognizes:</b> external connections, viruses/malicious code, trusted insiders, unauthorized access from trusted locations.</li>
+<li><b>Can:</b> review audit logs, alert admins, track slow and fast intrusions, highlight vulnerabilities, identify origin and attacker location; if configured, interrupt attacks or reconfigure routers/firewalls.</li>
+<li><b>Alerts via:</b> on-screen notification (most common), sound, email, text message, log file.</li></ul>`)+
+D('11. IDS responses and limits',`<div class="tw"><table><tr><th>Response</th><th>Definition</th></tr><tr><td>Active</td><td>Directly affects the malicious activity of traffic or host application</td></tr><tr><td>Passive</td><td>Does not affect the activity; records and notifies the administrator</td></tr><tr><td>Hybrid</td><td>Stops the activity, records, and possibly notifies</td></tr></table></div>
+<p>Typical active responses: blocking ports, blocking source addresses, disabling communication over a cable segment. An IDS’s ability to stop attacks is <mark>limited</mark>; it is <mark>not a complete solution</mark>. It complements a <b>firewall</b> (allows/blocks traffic by rules); physical restrictions and logical access controls are still needed.</p>`)+
+D('12. After an intrusion is detected',`<ol><li><b>Contain</b> the intrusion (first response): protects other systems; already-compromised systems stay infected.</li><li><b>Investigate and clean:</b> find the cause; remove the threat or <mark>rebuild from a known-good image</mark>.</li><li><b>Check, then reconnect:</b> verify the security policy (ACLs, services, user accounts) before reconnecting.</li></ol>
+<p><b>Intrusion prevention:</b> maintain overall security (patches, controls) and respond to IDS findings by erecting barriers: update software, reconfigure access controls, reconfigure a firewall, remove/replace a service, or redesign the network.</p>
+<div class="box warn">Note: the outline also lists honey pots, padded cells, scanners, penetration testing, methods of attack and recovery, but those slides were not in the text you pasted. Send them and I’ll add them.</div>`);
+
+$('#summary').innerHTML='<h2>Smart Summary</h2><div class="box"><ul>'+[
+'<b>Centralized</b> = one authority (RADIUS, TACACS+), single point of failure · <b>Decentralized</b> = many (domains/trusts), no SPOF, inconsistent',
+'<b>Admin = 3 jobs:</b> account management · activity tracking · rights/permissions',
+'<b>Account lifecycle:</b> HR request → manager + security admin verify → train + sign policy · maintain (same approval) · close (automate, expiry for temps)',
+'<b>Enrollment</b> = initial account creation after identity verified',
+'<b>Privilege risks:</b> excessive · creeping → fix with <mark>least privilege + access reviews</mark>',
+'<b>Least privilege / Need to know / Implicit deny</b> (TA marks · nurse patients · firewall deny all)',
+'<b>Roles:</b> Owner decides · Custodian implements · User uses',
+'<b>SoD:</b> split tasks → fraud needs collusion · Static (fixed roles) vs Dynamic (same transaction)',
+'<b>Monitoring:</b> accountability + detect + reconstruct + evidence · logs → audit trail',
+'<b>Too much data:</b> data reduction · clipping level · data mining · IDS',
+'<b>IDS</b> = detective, alerts · <b>IPS</b> = blocks · responses: active / passive / hybrid',
+'<b>After intrusion:</b> Contain → Investigate &amp; clean → Check, then reconnect'
+].map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+
+$('#memory').innerHTML='<h2>Memory Optimization</h2>'+
+D('Mnemonics',`<div class="box tip"><b>Admin 3 jobs = “A-A-R”:</b> <b>A</b>ccounts, <b>A</b>ctivity tracking, <b>R</b>ights.</div>
+<div class="box tip"><b>After intrusion = “C-I-C”:</b> <b>C</b>ontain → <b>I</b>nvestigate/clean → <b>C</b>heck &amp; reconnect (“Catch It, Clean, Check”).</div>
+<div class="box tip"><b>Owner vs Custodian:</b> Owner = <b>O</b>rders (decides); Custodian = <b>C</b>arries out (implements).</div>
+<div class="box tip"><b>IDS vs IPS:</b> IDS = <b>D</b>etects (alarm); IPS = <b>P</b>revents (guard).</div>
+<div class="box tip"><b>Static vs Dynamic SoD:</b> Static = “Stuck” (never same person); Dynamic = “Dodges” (may hold both, can’t use together).</div>`,1)+
+D('Comparison tables',`<div class="tw"><table><tr><th></th><th>IDS</th><th>IPS</th></tr><tr><th>Type</th><td>Detective control</td><td>Preventive; blocks automatically</td></tr><tr><th>Output</th><td>Alerts, logs</td><td>Barriers against repeat attacks</td></tr></table></div>
+<div class="tw"><table><tr><th></th><th>Excessive privilege</th><th>Creeping privileges</th></tr><tr><th>What</th><td>More access than tasks need</td><td>Old permissions pile up after role changes</td></tr><tr><th>Fix</th><td colspan="2">Least privilege + regular access reviews</td></tr></table></div>
+<div class="tw"><table><tr><th></th><th>Active</th><th>Passive</th><th>Hybrid</th></tr><tr><th>Effect</th><td>Affects/stops activity</td><td>Records and notifies only</td><td>Stops + records + maybe notifies</td></tr></table></div>`)+
+D('Common mistakes &amp; traps',`<div class="box warn"><ul><li>An IDS <b>detects</b>; automatic blocking is mainly <b>IPS</b>.</li><li>Centralized is <b>not</b> automatically “better”: single point of failure.</li><li>Owner ≠ custodian: owner decides and is liable; custodian implements.</li><li>Need to know ≠ least privilege: need to know applies <i>even with clearance</i>.</li><li>Enrollment happens <b>after</b> identity is verified.</li><li>First response to an intrusion is <b>containment</b>, not cleaning.</li><li>An IDS does not replace firewalls or access controls.</li><li>Clipping level example: alert only after <b>more than 5</b> failed logins.</li></ul></div>`)+
+D('Spaced repetition plan',`<div class="box">Day 0 read → Day 1 MCQs → Day 3 redo misses + written → Day 7 revision sheet → night before: revision sheet only. Chunks: (1) centralized/decentralized, (2) account lifecycle, (3) privilege principles + roles, (4) SoD, (5) monitoring + IDS + response.</div>`);
+
+const M=[
+['Authorization verification by a single entity describes:',['Decentralized control','Centralized control','Discretionary control','Implicit deny'],1,'Centralized: one main authority makes access decisions.'],
+['Which are centralized AAA protocols?',['RADIUS and TACACS+','Domains and trusts','IDS and IPS','Kerberos only'],0,'RADIUS and TACACS+ are the slide examples.'],
+['A main weakness of centralized control:',['Hard to keep consistent','Higher overhead','Can be a single point of failure','Needs several teams'],2,'Unless made redundant.'],
+['Decentralized control is best associated with:',['Domains and trusts','RADIUS','TACACS+','Clipping levels'],0,'Distributed authorities, no single point of failure.'],
+['The three main administration responsibilities are:',['Create, delete, audit','Account management, activity tracking, rights/permissions management','Identify, log, block','Owner, custodian, user'],1,'The four IAAA principles become three responsibilities.'],
+['A new account request should come from:',['The user','HR with required security level','The custodian','The IDS'],1,'Then verified by department manager and security administrator.'],
+['Enrollment is:',['Deleting an account','Initial creation of an account after identity verification','Changing privileges','Reviewing logs'],1,'It creates the identity and sets authentication factors.'],
+['Temporary staff accounts should:',['Never be created','Have an expiration date programmed in','Share a generic login','Be reviewed yearly only'],1,'Expiration is built into the account.'],
+['Permissions piling up after role changes are called:',['Implicit deny','Creeping privileges','Need to know','Static SoD'],1,'They lead to excessive privilege.'],
+['Best prevention of creeping privileges:',['Longer passwords','Least privilege and regular access reviews','More custodians','Disabling logs'],1,'Review and remove old rights.'],
+['A TA who can enter marks but not change final grades illustrates:',['Implicit deny','Least privilege','Dynamic SoD','Enrollment'],1,'Only what the task requires.'],
+['A cleared nurse who sees only her own patients’ records illustrates:',['Need to know','Implicit deny','Creeping privilege','Collusion'],0,'Clearance alone is insufficient; a work-related reason is required.'],
+['A firewall whose last rule is “deny all” illustrates:',['Least privilege','Need to know','Implicit deny','Hybrid response'],2,'Not explicitly allowed = denied.'],
+['Who has final responsibility for classifying and protecting data?',['Custodian','User','Owner','IDS'],2,'The owner may be liable for negligence.'],
+['Who implements the protection requirements day to day?',['Owner','Custodian','Auditor','User'],1,'IT staff or system security administrator.'],
+['Separation of duties makes fraud require:',['Encryption','Collusion','A firewall','Redundancy'],1,'No single subject can bypass controls alone.'],
+['Conflicting roles may be assigned but not used in the same transaction. This is:',['Static SoD','Dynamic SoD','Need to know','Least privilege'],1,'Dynamic SoD restricts exercise, not assignment.'],
+['Which pair conflicts under SoD?',['Write code / Deploy to production','Write code / Read code','Create account / Close account','Log in / Log out'],0,'Developers should not deploy their own code.'],
+['A clipping level of 5 means:',['Block all users after 5 logins','Alert only after more than 5 failed logins','Keep 5 days of logs','5 admins required'],1,'It is a threshold used for data reduction.'],
+['Tricky: an IDS is primarily a:',['Preventive control','Technical detective control','Physical control','Corrective control only'],1,'Automatic blocking is mainly an IPS function.'],
+['The most common IDS alert method:',['Email','Text message','On-screen notification','Sound'],2,'Others: sound, email, text, log file.'],
+['An IDS response that only records and notifies is:',['Active','Passive','Hybrid','Reactive'],1,'Passive does not affect the malicious activity.'],
+['The FIRST step after detecting an intrusion:',['Reconnect','Contain it','Rebuild from image','Delete logs'],1,'Containment prevents damage to other systems.'],
+['Hard: a system can’t be trusted after compromise. The best cleaning option is:',['Reboot','Rebuild from a known-good image','Change one password','Disable the IDS'],1,'Then verify ACLs, services and accounts before reconnecting.']
+];
+let score=0,done=0;
+$('#mcq').innerHTML='<h2>MCQs <span class="tag">(tap an answer)</span></h2><p>Score: <span id="sc">0/0</span> of '+M.length+' <button onclick="location.reload()">Reset</button></p><div id="ml"></div>';
+M.forEach((m,i)=>{const d=document.createElement('div');d.className='q';
+d.innerHTML=`<div class="tag">Q${i+1} · ${i<9?'Easy':i<19?'Medium':'Hard'}</div><b>${m[0]}</b>`;
+const ex=document.createElement('div');ex.className='ex';ex.textContent='✔ '+m[3];
+m[1].forEach((o,j)=>{const b=document.createElement('button');b.className='o';b.textContent=String.fromCharCode(65+j)+'. '+o;
+b.onclick=()=>{if(d.dataset.d)return;d.dataset.d=1;done++;if(j===m[2])score++;b.classList.add(j===m[2]?'ok':'no');d.querySelectorAll('.o')[m[2]].classList.add('ok');ex.classList.add('show');$('#sc').textContent=score+'/'+done};d.appendChild(b)});
+d.appendChild(ex);$('#ml').appendChild(d)});
+
+const W=[
+['Short: Compare centralized and decentralized access control.','Centralized: a single entity verifies all authorization; small team, low overhead, consistent, but a possible single point of failure unless redundant (RADIUS, TACACS+). Decentralized: several entities verify access; no single point of failure, but multiple teams, higher overhead and harder consistency (domains and trusts).'],
+['Short: Explain the account lifecycle.','Create: formal HR request with security level, verified by department manager and security administrator, user trained and signs policy. Maintain: mostly rights changes, same approval process, unauthorized changes are risky. Close: disable/delete/revoke on departure, automate via HR, temporary staff get expiration dates.'],
+['Short: Define excessive and creeping privileges and how to prevent them.','Excessive privilege is more access than the user’s tasks require. Creeping privileges are old permissions that accumulate after role changes and never get removed, leading to excessive privilege. Prevent with least privilege and regular access reviews.'],
+['Short: Distinguish owner, custodian and user.','Owner: has final responsibility for classifying, labeling and protecting data, may be liable, decides protection requirements (e.g. dean). Custodian: day-to-day storage, maintenance and technical protection implementing the owner’s policies (IT). User: any subject accessing data to do work (instructors, students).'],
+['Long: Explain separation of duties, its types, and examples.','SoD divides sensitive tasks among several people so no single subject can circumvent or disable security mechanisms; fraud would require collusion. Static SoD assigns privileges by written, rarely changing policies so certain roles are never held by one person. Dynamic SoD allows conflicting roles to be assigned but not exercised together in the same context or transaction. Examples of conflicts: request vs approve a payment, create vs audit user accounts, write code vs deploy to production, security administration vs system administration.'],
+['Long: Describe the role of monitoring and how to deal with large volumes of log data.','Monitoring is the programmatic means of holding authenticated subjects accountable and detecting unauthorized or abnormal activity (malicious actions, intrusion attempts, system failures). It helps reconstruct events, provide prosecution evidence and produce problem reports. Logs give accountability, audit trails, system-health indicators and failure causes, but volume is huge. Solutions: data reduction, clipping levels (e.g. alert after more than 5 failed logins), data mining tools, and IDS for real-time alerts.'],
+['Long: What is an IDS, how does it respond, and what happens after an intrusion?','An IDS monitors network/host activity, analyzes events and audit logs, detects suspicious behavior or policy violations and alerts administrators; it is a technical detective control, while blocking is mainly IPS. Responses are active (affect the activity: block ports or sources), passive (record and notify) or hybrid. It is limited and complements firewalls and other controls. After detection: contain the intrusion, investigate and clean (or rebuild from a known-good image), then verify ACLs, services and accounts before reconnecting. Prevention then adds patches, updated software, reconfigured access controls or firewalls, or network redesign.']
+];
+$('#written').innerHTML='<h2>Written Questions &amp; Model Answers</h2>'+W.map((w,i)=>D(`${i+1}. ${w[0]}`,`<div class="box tip"><b>Model answer:</b> ${w[1]}</div>`)).join('');
+
+$('#rev').innerHTML=`<h2>⚡ Revision Sheet · Night Before</h2>
+<div class="box"><b>Centralized:</b> single authority, RADIUS/TACACS+, SPOF. <b>Decentralized:</b> many authorities, domains/trusts, no SPOF, inconsistent.</div>
+<div class="box"><b>Admin:</b> accounts · activity tracking · rights. <b>Lifecycle:</b> HR request → manager+security admin → train/sign; maintain; close (expiry for temps). <b>Enrollment</b> after identity verified.</div>
+<div class="box"><b>Privilege:</b> excessive, creeping → least privilege + access reviews. <b>Least privilege</b> (TA), <b>need to know</b> (nurse), <b>implicit deny</b> (firewall).</div>
+<div class="box"><b>Owner</b> decides/liable · <b>Custodian</b> implements · <b>User</b> uses.</div>
+<div class="box"><b>SoD:</b> fraud needs collusion. Static = never same person; Dynamic = can’t use together. Pairs: request/approve · create/audit accounts · code/deploy · security/system admin.</div>
+<div class="box"><b>Monitoring:</b> accountability, detect, reconstruct, evidence. <b>Logs:</b> audit trail. <b>Reduction:</b> clipping level (&gt;5 failed logins), data mining, IDS.</div>
+<div class="box"><b>IDS:</b> detective, alerts (on-screen most common). <b>Responses:</b> active / passive / hybrid. <b>IPS:</b> blocks. <b>After intrusion:</b> Contain → Investigate &amp; clean (known-good image) → Check, then reconnect.</div>
+<div class="box warn"><b>Traps:</b> IDS ≠ blocking · centralized ≠ always better · enrollment after verification · contain first.</div>`;
+let t='explain';try{t=localStorage.getItem('isstab')||t}catch(e){}
+show(t);
+</script></body></html>
