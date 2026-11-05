@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ISS Past Exams Trainer</title>
+<style>
+:root{--bg:#f2f6f9;--card:#fff;--tx:#14202b;--mu:#617085;--bd:#dfe7ee;--pr:#0ea5a4;--pr2:#3b82f6;--ok:#12a36b;--okb:#e6f8f0;--bad:#e5484d;--badb:#fdecec;--wn:#d98a0b;--wnb:#fff4dd;--sh:0 8px 30px rgba(30,60,90,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1219;--card:#142029;--tx:#e6eef6;--mu:#8fa2b6;--bd:#243542;--okb:#0f2b22;--badb:#33161a;--wnb:#2e2410;--sh:0 8px 30px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#0b1219;--card:#142029;--tx:#e6eef6;--mu:#8fa2b6;--bd:#243542;--okb:#0f2b22;--badb:#33161a;--wnb:#2e2410;--sh:0 8px 30px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;z-index:-1;width:48vmax;height:48vmax;border-radius:50%;filter:blur(90px);opacity:.28}
+body::before{background:var(--pr);top:-18vmax;left:-12vmax}
+body::after{background:var(--pr2);bottom:-20vmax;right:-14vmax}
+.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--bd)}
+.top div{max-width:900px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:800;font-size:1.1rem;cursor:pointer;background:linear-gradient(90deg,var(--pr),var(--pr2));-webkit-background-clip:text;background-clip:text;color:transparent;flex:1}
+button{font:inherit;color:inherit;cursor:pointer}
+.ic{border:1px solid var(--bd);background:var(--card);border-radius:12px;padding:8px 12px;box-shadow:var(--sh)}
+main{max-width:900px;margin:auto;padding:20px 16px 60px}
+.hero{text-align:center;padding:34px 8px 22px}
+.hero h1{font-size:clamp(1.8rem,6vw,3rem);line-height:1.15;font-weight:850;letter-spacing:-.02em}
+.hero h1 span{background:linear-gradient(90deg,var(--pr),var(--pr2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mu);margin-top:10px;max-width:560px;margin-inline:auto}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));margin-top:18px}
+.ex{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:20px;box-shadow:var(--sh);cursor:pointer;text-align:left;transition:.2s;display:flex;flex-direction:column;gap:6px}
+.ex:hover{transform:translateY(-4px);border-color:var(--pr)}
+.ex b{font-size:1.25rem}.ex small{color:var(--mu)}
+.tag{align-self:flex-start;background:linear-gradient(90deg,var(--pr),var(--pr2));color:#fff;border-radius:99px;padding:2px 12px;font-size:.78rem;font-weight:700}
+.best{margin-top:8px;font-size:.88rem;color:var(--mu)}
+.bar{height:8px;background:var(--bd);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pr),var(--pr2));transition:width .4s}
+.stat{position:sticky;top:58px;z-index:10;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px 16px;box-shadow:var(--sh);margin:6px 0 18px}
+.stat .row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.9rem;margin-bottom:8px;font-weight:600}
+.back{background:none;border:0;color:var(--pr);font-weight:700;padding:6px 0}
+h2{font-size:1.5rem;margin:6px 0 2px}.sub{color:var(--mu);font-size:.9rem}
+.q{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:var(--sh)}
+.q h3{font-size:1.02rem;font-weight:650;display:flex;gap:10px}
+.n{flex:none;width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--pr),var(--pr2));color:#fff;display:grid;place-items:center;font-size:.85rem;font-weight:800}
+.opts{display:grid;gap:9px;margin-top:14px}
+.o{display:flex;gap:10px;text-align:left;align-items:flex-start;background:var(--bg);border:1.5px solid var(--bd);border-radius:12px;padding:11px 13px;transition:.15s;width:100%}
+.o:hover:not(:disabled){border-color:var(--pr);transform:translateX(3px)}
+.o:disabled{cursor:default}
+.o em{font-style:normal;font-weight:800;color:var(--pr);flex:none}
+.o.ok{background:var(--okb);border-color:var(--ok)}.o.ok em{color:var(--ok)}
+.o.bad{background:var(--badb);border-color:var(--bad)}.o.bad em{color:var(--bad)}
+.fb{margin-top:12px;border-radius:12px;padding:10px 13px;font-size:.93rem;display:none}
+.fb.s{display:block}.fb.ok{background:var(--okb);color:var(--ok)}.fb.bad{background:var(--badb);color:var(--bad)}
+.fb strong{display:block;font-size:1rem}
+.nt{margin-top:8px;padding:9px 12px;border-radius:10px;background:var(--wnb);color:var(--tx);font-size:.88rem;border-left:4px solid var(--wn)}
+.nt b{color:var(--wn)}
+.sec{margin:26px 0 12px;font-size:1.2rem}
+.wa{margin-top:12px;display:none;background:var(--okb);border-radius:12px;padding:12px 14px;font-size:.93rem}
+.wa.s{display:block}.wa ul{padding-left:20px;margin-top:6px}
+.res{text-align:center;background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:28px 18px;box-shadow:var(--sh)}
+.res .big{font-size:3rem;font-weight:850;background:linear-gradient(90deg,var(--pr),var(--pr2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.pb{background:linear-gradient(90deg,var(--pr),var(--pr2));color:#fff;border:0;border-radius:12px;padding:10px 20px;font-weight:700}
+.sb{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 20px;font-weight:700}
+.pop{animation:pop .35s}@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:520px){.q{padding:14px}.stat{top:56px}}
+</style>
+</head>
+<body>
+<header class="top"><div><span class="logo" onclick="location.hash=''">ISS Exam Trainer</span><button class="ic" id="th" aria-label="Toggle theme">🌙</button></div></header>
+<main id="app"></main>
+<script>
+const Q=(q,o,a,n)=>({q,o,a,n}),T=(q,a,n)=>Q(q,["True","False"],a,n);
+const AB=["Authentication","Authorization","Identification","Accountability"];
+/* shared questions (they repeat across exams) */
+const integ=Q("One of the three main security principles for any type of security control is Integrity: no unauthorized ______.",["Read","Write","Modify","Delete"],2),
+confid=Q("One of the three main security principles for any type of security control is Confidentiality: no unauthorized ______.",["Read","Write","Modify","Delete"],0),
+otp=Q("One-time password is an example of ______ authentication factors.",["Type 1","Type 2","Type 3","Type 4"],1,"Type 2 = something you have."),
+smart=Q("A smart card is an example of ______ authentication factors.",["Type 1","Type 2","Type 3","Type 4"],1),
+memc=Q("A memory card is an example of ______ authentication factors.",["Type 1","Type 2","Type 3","Type 4"],1),
+where=Q("“Somewhere you are” is often included in the ______ category.",["something you are","something you have","something you know","something you do"],1,"?Textbooks differ on location. The course key puts it under something you have."),
+doit=Q("“Something you do” is often included in the ______ category.",["something you are","something you have","something you know","somewhere you are"],0),
+authn=Q("______ indicates who is trusted to enter the system.",["Identification","Authentication","Authorization","Accountability"],1),
+authz=Q("______ indicates who is trusted to perform specific operations.",["Identification","Authentication","Authorization","Accountability"],2),
+pass=Q("A ______ is a password constructed from two or more unrelated words.",["static password","composition password","passphrase","cognitive password"],2,"?In the 2024 paper the same question adds “joined with a number or symbol in between”, and the answer there is composition password."),
+comp=Q("A ______ is a password constructed from two or more unrelated words joined together with a number or symbol in between.",["static password","composition password","passphrase","cognitive password"],1),
+fing=Q("When using ______, minutia matching is affected by small changes including temperature, pressure, and minor surface damage.",["Hand Geometry","Palm Scans","Fingerprints","Face Scans"],2),
+buy=Q("Which of the following is better to buy as a biometric device?",["CER = 4","CER = 5","CER = 6","CER = 7"],0,"The lower the Crossover Error Rate, the more accurate the device."),
+cereq=Q("CER indicates that FRR ______ FAR.",[">","<","<>","="],3),
+mod=Q("Access control ______ are formal descriptions of a security policy, which encapsulates the security requirements of an organization and prescribes the steps needed to achieve them.",["tools","models","mechanisms","administrations"],1),
+creep=Q("______ privileges involve a user account accumulating privileges over time as job roles and assigned tasks change.",["Creeping","Excessive","Least","Accumulate"],0),
+cust=Q("When discussing access to objects, the custodian is the ______.",["user","owner","IT staff","manager"],2),
+subj=Q("A ______ is an active entity.",["subject","object","class","file"],0,"Subjects are active; objects are passive."),
+obj=Q("______ are passive entities.",["Subjects","Objects","Classes","Files"],1),
+iris=Q("______ are one of the most accurate forms of biometric authentication and can differentiate between identical twins.",["Retina Scans","Palm Scans","Iris Scans","Face Scans"],2),
+twin=Q("______ cannot differentiate between identical twins.",["Retina Scans","Palm Scans","Iris Scans","Face Scans"],3),
+idm=Q("Identification is a ______ process while Authentication is a ______ process.",["matching, searching","matching, querying","searching, matching","searching, querying"],2,"Identification = 1:N search; authentication = 1:1 match."),
+aim=Q("Authentication is a ______ process, while identification is a ______ process.",["matching, searching","matching, querying","searching, matching","searching, querying"],0),
+zeph=Q("______ is not included as a factor in the Zephyr chart for comparing biometric factors.",["Accuracy","Cost","Effort","Rate"],3),
+nond=Q("______ access controls do not allow the owner or creator of an object to control and define subject access to that object.",["Discretionary","Nondiscretionary","Role-based","Mandatory"],1),
+lab=Q("Mandatory access controls rely upon the use of classification ______.",["Tasks","Labels","Rules","Roles"],1),
+ref=Q("The stored sample of a biometric factor is called a ______.",["data profile","security profile","reference profile","user profile"],2),
+evl=Q("______ capture events, changes, messages, and other data that describe what activities occurred on a system.",["System Logs","Transaction Logs","Database Logs","Event Logs"],3),
+hr=Q("When creating a new account, the process must start with a formal request from ______.",["User","Manager","HR","Administrator"],2),
+lat=Q("______ access controls define upper and lower bounds of access for every relationship between a subject and an object.",["Lattice-Based","Rule-Based","Role-Based","Task-Based"],0),
+cerT=T("Crossover Error Rate is used to compare the accuracy of different biometric devices.",0),
+cpt=T("In compartmentalized environments, there is no relationship between one security domain and another.",0),
+cpr=T("Compartmentalized resources require an additional level of formalized access approval before they can be used by subjects.",0),
+mfa=T("Using two authentication factors of similar type is stronger than using different types.",1,"Strong authentication needs factors of different types."),
+phy=T("Physical access controls are tools used for identification, authentication, authorization, and accountability.",1,"Those functions are done by logical access controls."),
+rule=T("In rule-based access control systems, control is based on a specific profile created for each user. A common example of such a system is a firewall.",0,"!Corrected. The Mid 2024 paper marks the role-based wording as False and rewrites it as rule-based, so the rule-based wording is True. The earlier extracted key wrongly said False."),
+strong=T("Strong authentication is simply any authentication that requires two or more factors but not necessarily of different types.",1,"!Corrected. The Mid 2024 extracted key said True, but strong authentication requires different factor types, so it is False (as the Mid 2021 key says)."),
+EX=[
+{id:"mid2025a",t:"Mid 2025 · Paper A",s:"Information Systems Security · Dr. Mohamed Marie · 30 questions",d:[zeph,nond,lab,ref,
+Q("______ capture events, changes, messages, and other data that describe what activities occurred on a system.",["System Logs","Transaction Logs","Database Logs","Event Logs"],3),hr,lat,integ,otp,where,authn,pass,fing,buy,mod,creep,cust,obj,iris,idm,cerT,cpt,mfa,
+{...rule},phy,cpr,
+T("Static separation of duties is used when security requirements cannot be determined until the system is active and functioning.",1,"Dynamic separation of duties is used in that case."),
+T("In a hybrid attack, the attacker uses a script of common passwords to attempt to discover an account’s password.",1,"That describes a dictionary attack. A hybrid attack combines dictionary words with brute-force variations."),
+T("The amount of time the system requires to scan and process biometric data is the enrolment rate.",1,"That is the throughput rate. Enrolment is the first-time registration."),
+T("Audit trails can be used to reconstruct events and to verify whether a security policy or authorization was violated.",0)]},
+{id:"mid2025b",t:"Mid 2025 · Paper B",s:"Information Systems Security · shorter version · 14 questions",d:[integ,otp,where,authn,pass,fing,buy,mod,creep,cust,obj,iris,idm,zeph]},
+{id:"final2025",t:"Final 2025",s:"MCQ + written questions (question 22 and the last MCQ are missing in the source)",d:[
+Q("______ is not a method used by rootkits to avoid detection.",["Process hiding","Data hiding","Registry hiding","File hiding"],1),
+Q("______ is a two-part attack that uses legitimate-looking e-mails from well-known organizations to trick a user into visiting a web site.",["Spam","Phishing","Malware","UCE"],1),
+Q("When an attack diverts traffic by “poisoning” the organization’s DNS servers or changing the hosts file on users’ systems, it is called ______.",["Spam","Phishing","Malware","Pharming"],3),
+Q("______ are tiny 1x1 pixel images embedded in web pages to track users’ Internet usage. An alternative to cookies.",["Web beacons","Web cookies","BHOs","Key loggers"],0),
+Q("Need to know is a/an ______ access control.",["Discretionary","Nondiscretionary","Role-based","Mandatory"],3),
+Q("A/an ______ attack occurs when an amplifying server or network is used to flood a victim with useless data.",["Spoofing","SYN flooding","Smurfing","Sniffing"],2),
+Q("______ attacks are waged by breaking the standard three-way handshake used by TCP/IP.",["Brute-force","SYN flooding","Spoofing","Sniffing"],1),
+Q("______ is not one of the object reuse countermeasures.",["Application isolation","Server virtualization","Developer training","Code scanning"],3),
+Q("Depending on the environment, security labels can refer to ______.",["sensitivity","classification","department","All of the above"],3),
+Q("A ______ IDS can be labeled an expert system or a pseudo-artificial intelligence system.",["knowledge-based","Behavior-based","Signature-based","All of the above"],1),
+Q("______ are individual computers or entire networks created to serve as a snare for intruders. They look real but are 100% fake.",["Honey pots","Padded cells","Vulnerability scanners","All of the above"],0),
+Q("The idea of privilege usually means the ability to ______ the data.",["write","alter","delete","All of the above"],3),
+Q("The principle of least privilege can be applied to ______ environments.",["TBAC","MAC","RBAC","All of the above"],3),
+Q("______ help show the state of affairs for a server at any point along the timeline of its operation.",["User accounts","Event logs","System journals","All of the above"],1,"?The extracted key was unclear between B and D. I kept Event logs, the marked answer."),
+Q("______ is/are an important aspect of access control management. Without it, it is impossible to hold subjects accountable.",["Activity auditing","Account tracking","System monitoring","All of the above"],3),
+Q("In ______ access control systems, control is based on a specific profile created for each user. A common example is a firewall.",["Lattice-Based","Rule-Based","Role-Based","Task-Based"],1),
+Q("______ IDS response stops unwanted activity, records information about the event, and possibly notifies the administrator.",["Active","Passive","Hybrid","All of the above"],2,"?Hybrid combines active (stop) and passive (record and notify) responses. The marked answer is Hybrid; an Active-only response would not record and notify."),
+Q("______ IDS lacks a learning model.",["Knowledge-based","Behavior-based","Heuristics-based","All of the above"],0),
+Q("______ is one of the commercial business/private sector classification labels.",["Top secret","Secret","Private","Unclassified"],2),
+Q("______ involve a user account accumulating privileges over time as job roles and assigned tasks change.",["Creeping privilege","Excessive privilege","Least privilege","Accumulate privilege"],0),
+Q("We can prevent excessive and creeping privileges by properly applying the principle of ______.",["Lattice-Based","DAC","Least privilege","All of the above"],2),
+Q("______ is NOT one of the government/military classification labels.",["Top secret","Secret","Private","Unclassified"],2),
+Q("Access control administration has one or all of the following responsibilities.",["Account management","Activity tracking","Access rights","All of the above"],3),
+Q("______ is not one of the buffer overflow types.",["Stack","NOP","Heap","Hamming"],3),
+Q("______ is the art of pretending to be something other than what you are.",["Spamming","Spoofing","Smurfing","Sniffing"],1),
+Q("______ attacks cannot be fully prevented because they exploit normal functions of the network.",["DoS","DDoS","DRDoS","All of the above"],3),
+Q("______ are malicious users intent on waging an attack against a person or system. Their actions can result in stolen property (data, ideas, and so on).",["Crackers","Hackers","Attackers","All of the above"],0,"?Disputed. The extracted key said Attackers, but this wording matches the textbook definition of crackers. “Attackers” is the generic term, so check your slides.")],
+w:[["Explain tokens and mention their types.","A token is a small hardware device or software app used to prove identity. It is a “something you have” factor.",["Synchronous (time-based): generates a password that changes every fixed period and stays in sync with the authentication server.","Asynchronous (challenge-response): the server sends a challenge and the token computes the response."]],
+["Explain buffer overflow, its types, and its countermeasures.","It happens when a program writes more data into a buffer than it can hold, overwriting adjacent memory such as local variables and the return pointer. This can crash the system or run attacker code.",["Types: stack-based and heap-based.","Countermeasures: memory-safe languages, safe functions (strncpy instead of strcpy), ASLR and DEP, input length checks, code auditing."]],
+["Explain input attacks and their countermeasures.","These happen when an application trusts user input without checking it.",["Types: SQL injection, cross-site scripting (XSS), command injection.","Countermeasures: input validation, sanitization/encoding, parameterized queries."]]]},
+{id:"mid2024",t:"Mid 2024",s:"Information Systems Security · Midterm 2024 · 30 questions",d:[confid,memc,doit,authz,comp,fing,cereq,mod,creep,cust,subj,twin,aim,zeph,nond,lab,ref,evl,hr,lat,
+T("In role-based access control systems, control is based on a specific profile created for each user. A common example of such a system is a firewall.",1,"The statement describes rule-based control, not role-based."),
+T("In a brute-force attack, the attacker uses a script of common passwords and dictionary words to discover an account’s password.",1,"That is a dictionary attack."),
+{...strong},
+T("The most common authentication technique is the use of passwords, but they are also considered the weakest form of protection.",0),
+mfa,
+T("The dynamic separation of duties is used when security requirements cannot be determined until the system is active and functioning.",0),
+cpr,
+T("Audit trails cannot be used to reconstruct events and to verify whether a security policy or authorization was violated.",1),
+T("Throughput rate is the amount of time the system requires to scan and process a biometric factor.",0),
+cerT]},
+{id:"mid2021",t:"Mid 2021",s:"Information Systems Security · First Semester 2020/2021 · 30 questions",d:[subj,confid,smart,doit,authz,
+Q("A ______ is usually a series of questions about facts or predefined responses that only the subject should know.",["static password","composition password","passphrase","cognitive password"],3),
+fing,
+Q("______ are the most accurate form of biometric authentication but also the least acceptable.",["Retina Scans","Palm Scans","Iris Scans","Face Scans"],0),
+aim,zeph,
+Q("______ access controls allow the owner or creator of an object to control and define subject access to that object.",["Discretionary","Nondiscretionary","Role-based","Mandatory"],0),
+lab,twin,
+Q("CER indicates that FRR ______ FAR.",[">","<","="],2),
+mod,
+Q("______ privilege is when a user has more access, privilege, or permission than their assigned work tasks dictate.",["Creeping","Excessive","Least","Accumulate"],1),
+cust,evl,hr,lat,strong,
+T("The system may cause a record to be written to the security audit trail for numerous specific security-related events.",0),
+T("The most common authentication technique is the use of passwords, but they are also considered the weakest form of protection.",0),
+phy,
+T("In a brute-force attack, the attacker uses a script of common passwords and dictionary words to discover an account’s password.",1,"That is a dictionary attack."),
+T("Crossover Error Rate is not used to compare the accuracy of similar biometric devices.",1),
+cpt,{...rule},
+T("Static separation of duties is used when security requirements cannot be determined until the system is active and functioning.",1,"Dynamic separation of duties is used in that case."),cpr]},
+{id:"mid2017",t:"Mid 2017",s:"Network security & threats · 4 unique questions (5 and 6 repeat 3 and 4)",d:[
+Q("The step of passing authentication credentials over unencrypted links, leading to credential capture or session hijacking, is called:",["Input Validation","Identify Application Threats","Identify Assets Security Profile"],1,"?The wording is unusual; this is the key from the source."),
+Q("______ monitor and record traffic on the network.",["Network threats","Active attack","Passive attack"],2),
+Q("A ______ in a network will allow a malicious user to exploit a host or an application.",["Attack","Vulnerability","Threat"],1),
+Q("______ means attackers can crack packets encrypted by lightweight algorithms and decipher the payload.",["Eavesdropping","Spoofing","Footprinting"],0)]},
+{id:"mid2016",t:"Mid 2016",s:"Network security & threats · 29 questions (question 21 is missing)",d:[
+Q("Which of the following are considered web application threats?",["Session management","Input validation","All of the previous"],2),
+T("Denial-of-service threats are hard to launch and difficult to track.",1),
+Q("______ are difficult to detect.",["Network threats","Active attack","Passive attack"],2),
+Q("Which of the following causes lack of authenticity of electronic documents?",["Copies are as good as the original","Very easy to make copies","Easily modifiable"],2),
+Q("The security foundation that collects information on successful and failed access to objects is called:",["Integrity","Availability","Auditing"],2),
+Q("The target of a worm is:",["Email addresses","DNS","All of the previous"],0),
+Q("______ means attackers can crack packets encrypted by lightweight algorithms and decipher the payload.",["Eavesdropping","Spoofing","Footprinting"],0),
+Q("______ is a technique for securing authentication of communication partners.",["Cryptography","Encryption","Hash algorithm"],0),
+Q("From the figure (not included here), step (1) is:",["Maintain access","Exploit and penetrate","Escalate privilege"],1,"Attack order: exploit and penetrate, escalate privilege, maintain access."),
+Q("Referring to the previous question, step (2) is:",["Maintain access","Exploit and penetrate","Escalate privilege"],2),
+Q("Referring to the previous question, step (3) is:",["Maintain access","Exploit and penetrate","Escalate privilege"],0),
+Q("______ is a program placed by a black-hat hacker that allows access to a system and modification of existing OS programs.",["Backdoor","Rootkit","Trojan"],1),
+Q("In the process of ______, two different keys are used.",["Hash function","Asymmetric encryption","Symmetric encryption"],1),
+Q("______ governs the resources and operations that the authenticated client is permitted to access.",["Authorization","Authentication","Integrity"],0),
+Q("The step where an attacker injects commands or malicious data into the application is called:",["Identify Assets","Identify Application Threats","Input Validation Security Profile"],2),
+Q("In ______, the attacker must convince the user to click a crafted hyperlink, for example one embedded in an email.",["Arbitrary code execution","Query string manipulation","XSS"],2),
+Q("In the ______ threat, the attacker uses a fake source address that does not represent the actual address of the packet.",["Spoofing","Session hijacking","Sniffing"],0),
+Q("A ______ attack is an automated trial-and-error process used to guess a username, password, credit-card number or cryptographic key.",["Brute force","Password cracking","Dictionary"],0),
+T("An attacker surveys the potential target to identify it and to assess its characteristics.",0),
+T("A normal brute-force attack uses a single username against many passwords.",0),
+Q("The ______ may overwrite the local variables, return pointer, and other portions of adjacent memory.",["XSS","Denial of service","Buffer overflow"],2),
+Q("______ is a weakness that makes a threat possible, such as weak input validation.",["Attack","Threat","Vulnerability"],2),
+T("Example of a footprinting threat: the attacker gathers information about account details, operating system and software versions.",0),
+T("Ciphertext is the encrypted message that looks like a random stream of bits.",0),
+Q("In ______, the attacker uses a program to send a flood of TCP SYN requests to fill the pending connection queue on the server.",["Arbitrary code exchange","Buffer overflow","Denial of service"],2),
+T("Rate the documented threats according to the number of vulnerabilities found.",1),
+T("Spoofing attackers determine operating system and application versions.",1,"That is footprinting, not spoofing."),
+Q("______ is a piece of code that reproduces itself. It attaches to other programs or files and requires user intervention to propagate.",["Trojan","Worm","Virus"],2),
+T("A threat is an action that exploits a vulnerability or enacts a threat.",0)]}
+];
+const app=document.getElementById("app"),L="ABCDEFGH",best={};
+const th=document.getElementById("th"),root=document.documentElement;
+function setTheme(m){root.dataset.theme=m;th.textContent=m==="dark"?"☀️":"🌙";}
+setTheme(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+th.onclick=()=>setTheme(root.dataset.theme==="dark"?"light":"dark");
+function home(){
+ app.innerHTML=`<section class="hero pop"><h1>Ace your <span>ISS exam</span></h1><p>Pick an exam, choose an answer, and get instant right or wrong feedback with explanations.</p></section><div class="grid">${EX.map(e=>`<button class="ex pop" onclick="location.hash='${e.id}'"><span class="tag">${e.d.length} questions${e.w?" + "+e.w.length+" written":""}</span><b>${e.t}</b><small>${e.s}</small><span class="best">${best[e.id]!=null?"Best score: "+best[e.id]+"%":"Not attempted yet"}</span></button>`).join("")}</div>`;
+ scrollTo(0,0);
+}
+function quiz(e){
+ let ans=Array(e.d.length).fill(null);
+ app.innerHTML=`<button class="back" onclick="location.hash=''">← All exams</button><h2>${e.t}</h2><p class="sub">${e.s}</p>
+ <div class="stat"><div class="row"><span id="a">Answered 0/${e.d.length}</span><span id="c">✓ 0 · ✗ 0</span></div><div class="bar"><i id="p"></i></div></div>
+ <div id="qs">${e.d.map((x,i)=>`<article class="q pop" id="q${i}"><h3><span class="n">${i+1}</span><span>${x.q}</span></h3><div class="opts">${x.o.map((o,j)=>`<button class="o" data-i="${i}" data-j="${j}"><em>${L[j]}</em><span>${o}</span></button>`).join("")}</div><div class="fb"></div></article>`).join("")}</div><div id="r"></div>
+ ${e.w?`<h2 class="sec">Written questions</h2>`+e.w.map((x,i)=>`<article class="q"><h3><span class="n">W${i+1}</span><span>${x[0]}</span></h3><div class="btns" style="justify-content:flex-start"><button class="sb" data-w="${i}">Show model answer</button></div><div class="wa" id="w${i}"><p>${x[1]}</p><ul>${x[2].map(y=>`<li>${y}</li>`).join("")}</ul></div></article>`).join(""):""}`;
+ scrollTo(0,0);
+ const upd=()=>{
+  const n=ans.filter(v=>v!==null).length,ok=ans.filter((v,i)=>v===e.d[i].a).length;
+  a.textContent=`Answered ${n}/${e.d.length}`;c.textContent=`✓ ${ok} · ✗ ${n-ok}`;p.style.width=n/e.d.length*100+"%";
+  if(n===e.d.length){const pc=Math.round(ok/n*100);best[e.id]=Math.max(best[e.id]||0,pc);
+   r.innerHTML=`<div class="res pop"><div class="big">${pc}%</div><p>${ok} of ${n} correct · ${pc>=85?"Excellent! 🔥":pc>=60?"Good job, review the red ones.":"Keep practicing, you’ll get there."}</p><div class="btns"><button class="pb" onclick="quiz(EX.find(x=>x.id==='${e.id}'))">Retry</button><button class="sb" onclick="location.hash=''">All exams</button></div></div>`;
+   r.scrollIntoView({behavior:"smooth",block:"center"});}
+ };
+ app.onclick=ev=>{
+  const w=ev.target.closest("[data-w]");if(w){document.getElementById("w"+w.dataset.w).classList.toggle("s");return;}
+  const b=ev.target.closest(".o");if(!b)return;
+  const i=+b.dataset.i,j=+b.dataset.j,x=e.d[i];if(ans[i]!==null)return;
+  ans[i]=j;const card=document.getElementById("q"+i),bs=card.querySelectorAll(".o");
+  bs.forEach(o=>o.disabled=true);bs[x.a].classList.add("ok");
+  const good=j===x.a;if(!good)bs[j].classList.add("bad");
+  const fb=card.querySelector(".fb");fb.className="fb s "+(good?"ok":"bad");
+  let h=good?"<strong>✓ Correct!</strong>":`<strong>✗ Wrong</strong>Correct answer: ${L[x.a]}) ${x.o[x.a]}`;
+  if(x.n){const f=x.n[0]==="!",d=x.n[0]==="?";h+=`<div class="nt"><b>${f?"Corrected answer: ":d?"Note: ":"Explanation: "}</b>${f||d?x.n.slice(1):x.n}</div>`;}
+  fb.innerHTML=h;upd();
+ };
+}
+function route(){const e=EX.find(x=>"#"+x.id===location.hash);e?quiz(e):home();}
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
